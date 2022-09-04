@@ -7,4 +7,9 @@ router
   .get(ticketController.getAllTickets)
   .post(ticketController.createTicket);
 
+router
+  .route('/:id')
+  .get(ticketController.getTicket)
+  .patch(ticketController.updateTicket);
+
 module.exports = router;
