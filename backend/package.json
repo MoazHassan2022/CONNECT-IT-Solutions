@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "set NODE_ENV=prod&&nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "serve": "nodemon server.js"
   },
   "author": "Moaz Mohamed",
   "license": "ISC",
