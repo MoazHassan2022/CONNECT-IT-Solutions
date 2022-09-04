@@ -217,3 +217,14 @@ exports.getDummyInfo = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getIsAuth = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    requestAt: req.requestTime,
+    results: 1,
+    data: {
+      isAuth: true,
+    },
+  });
+});
