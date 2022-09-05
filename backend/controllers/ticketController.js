@@ -4,8 +4,8 @@ const AppError = require('../utils/appError');
 const Ticket = require('./../models/ticketsModel');
 
 exports.getAllTickets = catchAsync(async (req, res, next) => {
-  const id = req.query.id;
-  if (id) {
+  /*if (req.query.id) {
+    const id = req.query.id;
     // Send all tickets belonging to this id, maybe adminID or clientID
     delete req.query.id;
     const features = new APIFeatures(
@@ -25,7 +25,7 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
         tickets,
       },
     });
-  }
+  }*/
   req.query['status'] = 1;
   const features = new APIFeatures(Ticket.find(), req.query)
     .filter()
@@ -43,6 +43,13 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
   });
 });
 exports.createTicket = catchAsync(async (req, res, next) => {
+  if (req.body.attachments) {
+    req.body.attachments.forEach((element) => {
+      console.log('element');
+      /////////////////////// SAVE FILE TO SERVER /////////////////////
+    });
+  }
+  req.body.client = req.user._id;
   const newTicket = await Ticket.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -66,7 +73,10 @@ exports.getTicket = catchAsync(async (req, res, next) => {
 exports.updateTicket = catchAsync(async (req, res, next) => {
   if (req.body.comment) {
     let ticket = await Ticket.findById(req.params.id);
-    console.log(ticket);
+    req.body.comment['userID'] = req.user._id;
+    req.body.comment['createdAt'] = req.requestTime;
+    if (req.body.comment.isAnswer && req.user.isAdmin)
+      ticket['answer'] = req.body.comment.content;
     ticket['comments'].push(req.body.comment);
     await ticket.save();
     return res.status(200).json({
@@ -76,6 +86,13 @@ exports.updateTicket = catchAsync(async (req, res, next) => {
       },
     });
   }
+  if (req.body.admin) {
+    if (!req.user.isAdmin)
+      return next(new AppError('You are not an admin!', 401));
+    req.body.admin = req.user._id;
+  }
+  if (req.body.status && req.user.isAdmin)
+    return next(new AppError('You are not a client!', 401));
   const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
     new: true, // return the newly updated ticket
     runValidators: true, // validate with our schema on the new values
