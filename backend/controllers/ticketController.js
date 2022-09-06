@@ -33,6 +33,9 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
     .selectFields()
     .paginate();
   const tickets = await features.query;
+  /*tickets.forEach((el) =>
+    el['comments'].sort((a, b) => a['createdAt'] < b['createdAt'])
+  );*/
   res.status(200).json({
     status: 'success',
     requestAt: req.requestTime,
@@ -50,6 +53,7 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     });
   }
   req.body.client = req.user._id;
+  console.log(req.body);
   const newTicket = await Ticket.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -73,7 +77,8 @@ exports.getTicket = catchAsync(async (req, res, next) => {
 exports.updateTicket = catchAsync(async (req, res, next) => {
   if (req.body.comment) {
     let ticket = await Ticket.findById(req.params.id);
-    req.body.comment['userID'] = req.user._id;
+    req.body.comment['name'] = req.user.name;
+    req.body.comment['photo'] = req.user.photo;
     req.body.comment['createdAt'] = req.requestTime;
     if (req.body.comment.isAnswer && req.user.isAdmin)
       ticket['answer'] = req.body.comment.content;

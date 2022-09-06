@@ -14,7 +14,7 @@ router.patch(
 );*/
 router.patch('/updateMe', authController.protect, userController.updateMe);
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
-router.get('/myTickets', authController.protect, userController.getMyTickets); ///////////// TEST THIS //////////////
+router.get('/myTickets', authController.protect, userController.getMyTickets);
 
 router.route('/').get(userController.getAllUsers); /////////////////////// DELETE WHEN PRODUCTION //////////////////////////
 

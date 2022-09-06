@@ -43,6 +43,13 @@ const ticketSchema = mongoose.Schema({
     type: Boolean,
     default: 0,
   },
+  priority: {
+    type: Number,
+    enum: {
+      values: [1, 2, 3],
+      message: 'Priority is either 1, 2 or 3! 3 is the heighst priority.',
+    },
+  },
 });
 ticketSchema.pre(/^find/, function (next) {
   this.populate({
