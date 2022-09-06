@@ -53,8 +53,12 @@ const ticketSchema = mongoose.Schema({
   answer: String,
   comments: [Object],
   status: {
-    type: Boolean,
-    default: 0,
+    type: Number,
+    enum: {
+      values: [1, 2, 3],
+      message: 'Status is either 1, 2 or 3!.',
+    },
+    default: 1,
   },
   priority: {
     type: Number,
