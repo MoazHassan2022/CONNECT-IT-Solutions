@@ -4,16 +4,19 @@ const GreyColor = "#999";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#f9a825",
+      main: "#9C4A1A",
     },
     secondary: {
-      main: "#fb8c00",
+      main: "#F7C815",
     },
-    text:{
-      main: "#583E26",
-    },
-    button:{
+    thrid:{
       main: "#EC9704",
+    },
+    forth:{
+      main: "#A78B71",
+    },
+    fivth:{
+      main: "#583E26",
     }
   },
    
