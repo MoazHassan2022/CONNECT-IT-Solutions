@@ -53,7 +53,7 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     });
   }
   req.body.client = req.user._id;
-  console.log(req.body);
+  req.body.createdAt = req.requestTime;
   const newTicket = await Ticket.create(req.body);
   res.status(201).json({
     status: 'success',
