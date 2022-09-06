@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 // Subscribe to unhandled rejection of any promise
@@ -13,7 +14,9 @@ process.on('uncaughtException', (err) => {
 });
 const app = require('./app');
 
-/*// Connect to the database
+app.use(cors()); // Use this after the variable declaration
+
+// Connect to the database
 const dbConnectionString = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
@@ -25,8 +28,8 @@ mongoose
     useNewUrlParser: true,
   })
   .then((connection) => {
-    console.log(`Successfully connected to natours database`);
-  });*/
+    console.log(`Successfully connected to itea database`);
+  });
 
 // LOCAL DATABASE
 /*mongoose.connect(process.env.DATABASE_LOCAL, {
