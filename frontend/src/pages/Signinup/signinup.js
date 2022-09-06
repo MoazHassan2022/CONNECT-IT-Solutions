@@ -3,10 +3,13 @@ import { AiFillGithub , AiFillInstagram , AiFillTwitterCircle , AiFillLinkedin }
 import { useState } from "react";
 import  logo  from "../../Utalites/outimports";
 import "./signinup.css";
+import { Alert, Snackbar } from "@mui/material";
 
 
  export const Signinup = () => {
     const [signin, setsignin] = useState(false);
+    const [errorlogin, seterrorlogin] = useState(false);
+
     
     var singcalssname = classNames(
         "container",
@@ -14,6 +17,11 @@ import "./signinup.css";
             'right-panel-active': signin
         }
     )
+
+    const handlesignin = () => {
+
+    }
+
     return (
         <div className="loader-container">
             <div className={singcalssname} id="container">
@@ -29,7 +37,7 @@ import "./signinup.css";
                 </form>
             </div>
             <div className="form-container sign-in-container">
-                <form action="#">
+                <form action="#" onSubmit={handlesignin} >
                     <h2>safacotech</h2>
                     <h1>Sign in</h1>
                     <span>or use your account</span>
@@ -64,6 +72,14 @@ import "./signinup.css";
             <a href="#" target="_blank" className="social"><AiFillLinkedin  size={30} color="#fff" /> </a>
             </div>
         </div>
+        
+        <Snackbar open={errorlogin} autoHideDuration={6000} onClose={() => seterrorlogin(false) }>
+            <Alert onClose={() => seterrorlogin(false)} severity="error" sx={{ width: '100%' }}>
+                error in login!
+            </Alert>
+        </Snackbar>
+
+ 
     </div>
     )
 }
