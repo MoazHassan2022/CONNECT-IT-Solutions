@@ -67,6 +67,7 @@ const ticketSchema = mongoose.Schema({
       message: 'Priority is either 1, 2 or 3! 3 is the heighst priority.',
     },
   },
+  createdAt: String,
 });
 ticketSchema.pre(/^find/, function (next) {
   this.populate({
