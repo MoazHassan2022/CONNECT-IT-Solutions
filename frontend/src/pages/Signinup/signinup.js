@@ -4,12 +4,15 @@ import { useState } from "react";
 import  logo  from "../../Utalites/outimports";
 import "./signinup.css";
 import { Alert, Snackbar } from "@mui/material";
+import axios from "axios";
 
 
  export const Signinup = () => {
     const [signin, setsignin] = useState(false);
     const [errorlogin, seterrorlogin] = useState(false);
-
+    const [Name , setName] = useState("")
+    const [Password , setPassword] = useState("");
+    ;
     
     var singcalssname = classNames(
         "container",
@@ -18,7 +21,21 @@ import { Alert, Snackbar } from "@mui/material";
         }
     )
 
-    const handlesignin = () => {
+    const  handlesignin = async (e) => {
+           /* e.preventDefault();
+              try {
+                const user = {
+                  "username" : "", 
+                  "password" : "",
+                  }
+                await axios.post("/api/tickets", user);
+              } catch (err) {
+                alert(err);
+                seterrorlogin(true);
+              }*/
+
+
+            
 
     }
 
@@ -41,8 +58,8 @@ import { Alert, Snackbar } from "@mui/material";
                     <h2>safacotech</h2>
                     <h1>Sign in</h1>
                     <span>or use your account</span>
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input type="email" placeholder="Email" onchange={ (e) => setName(e.target.value) } />
+                    <input type="password" placeholder="Password" onchange={ (e) => setPassword(e.target.value) } />
                     <a href="#">Forgot your password?</a>
                     <button >Sign In</button>
                 </form>

@@ -4,11 +4,15 @@ import App from "./App";
 import theme from "./Utalites/Theme";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css"
+import { Provider } from "react-redux";
+//import store from "./Store/Store";
+
+
 
 ReactDOM.render(
   <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <App />
+          <App />
       </ThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")

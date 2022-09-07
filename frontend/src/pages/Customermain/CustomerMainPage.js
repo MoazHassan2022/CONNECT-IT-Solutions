@@ -52,18 +52,19 @@ function a11yProps(index) {
 
 
     // 1 => customer , 2 => Admin
-    const usertype = 2;
+    const usertype = 1;
 
     let tabs;
       
     if (usertype === 1) {
-        tabs = ["submit ticket" , "Manage Your Tickets" , "Solved Tickets" ];
+        tabs = ["submit ticket" , "Manage Your Tickets" , "Solved Tickets"];
     }else{
-        tabs = ["profile" , "Manage Your Tickets" , "Solved Tickets"];
+        tabs = ["profile" , "Manage Your Tickets" , "Solved Tickets", "Pending Tickets" ];
     }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    console.log(newValue);
   };
 
   return (
@@ -118,12 +119,16 @@ function a11yProps(index) {
               <AdminProfile /> 
               </TabPanel>
 
-              <TabPanel value={value} index={2}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} />
+              <TabPanel value={value} index={2} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} userType={2} />
               </TabPanel>
 
-              <TabPanel value={value} index={3}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} />      
+              <TabPanel value={value} index={3} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>      
+              </TabPanel>
+
+              <TabPanel value={value} index={4} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>      
               </TabPanel>
                   </>
           }
@@ -134,11 +139,11 @@ function a11yProps(index) {
               </TabPanel>
 
               <TabPanel value={value} index={2}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} />      
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} userType={1} />      
               </TabPanel>
 
               <TabPanel value={value} index={3}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} />      
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={1} />      
               </TabPanel>
                   </>
           }
