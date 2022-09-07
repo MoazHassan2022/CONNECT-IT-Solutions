@@ -77,7 +77,6 @@ app.use(express.static(`${__dirname}/public`));
 // Write down the date and log the headers
 app.use((req, res, next) => {
   req.requestTime = new Date().toLocaleString();
-  console.log(req.headers);
   next();
 });
 
