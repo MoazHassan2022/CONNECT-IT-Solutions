@@ -15,6 +15,19 @@ const ticketSchema = mongoose.Schema({
       'A ticket subject must have more than or equal to 10 characters',
     ],
   },
+  description: {
+    type: String,
+    required: [true, 'A ticket must have a description!'],
+    trim: true, // Remove all the white space in the beginning or end of the field
+    maxLength: [
+      400,
+      'A ticket description must have less than or equal to 150 characters',
+    ],
+    minLength: [
+      4,
+      'A ticket description must have more than or equal to 10 characters',
+    ],
+  },
   admin: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -40,8 +53,12 @@ const ticketSchema = mongoose.Schema({
   answer: String,
   comments: [Object],
   status: {
-    type: Boolean,
-    default: 0,
+    type: Number,
+    enum: {
+      values: [1, 2, 3],
+      message: 'Status is either 1, 2 or 3!.',
+    },
+    default: 1,
   },
   priority: {
     type: Number,
@@ -50,6 +67,7 @@ const ticketSchema = mongoose.Schema({
       message: 'Priority is either 1, 2 or 3! 3 is the heighst priority.',
     },
   },
+  createdAt: String,
 });
 ticketSchema.pre(/^find/, function (next) {
   this.populate({

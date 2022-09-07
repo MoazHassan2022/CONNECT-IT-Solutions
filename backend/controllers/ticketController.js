@@ -26,7 +26,7 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
       },
     });
   }*/
-  req.query['status'] = 1;
+  req.query['status'] = 3;
   const features = new APIFeatures(Ticket.find(), req.query)
     .filter()
     .sort()
@@ -53,7 +53,7 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     });
   }
   req.body.client = req.user._id;
-  console.log(req.body);
+  req.body.createdAt = req.requestTime;
   const newTicket = await Ticket.create(req.body);
   res.status(201).json({
     status: 'success',
@@ -95,9 +95,26 @@ exports.updateTicket = catchAsync(async (req, res, next) => {
     if (!req.user.isAdmin)
       return next(new AppError('You are not an admin!', 401));
     req.body.admin = req.user._id;
+    req.body.status = 2;
   }
-  if (req.body.status && req.user.isAdmin)
-    return next(new AppError('You are not a client!', 401));
+  if (req.body.status) {
+    if (req.user.isAdmin)
+      return next(new AppError('You are not a client!', 401));
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) {
+      return next(new AppError('Ticket not found!', 404));
+    }
+    if (req.user._id.toString() !== ticket.client._id.toString())
+      return next(new AppError('You are not the owner!', 404));
+    ticket.status = req.body.status;
+    await ticket.save();
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        ticket,
+      },
+    });
+  }
   const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
     new: true, // return the newly updated ticket
     runValidators: true, // validate with our schema on the new values
