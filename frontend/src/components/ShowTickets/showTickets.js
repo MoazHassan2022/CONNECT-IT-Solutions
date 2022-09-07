@@ -19,12 +19,12 @@ import Collapse from '@mui/material/Collapse';
 import TableHead from '@mui/material/TableHead';
 import Typography from '@mui/material/Typography';
 import {MdKeyboardArrowDown,  MdKeyboardArrowUp} from 'react-icons/md';
-import {BsFillArrowRightCircleFill} from 'react-icons/bs';
+import {BsFillArrowRightCircleFill , BsFillCheckCircleFill} from 'react-icons/bs';
 import axios from 'axios';
 import { Avatar, Button, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
 import { Stack } from '@mui/system';
 import theme from "../../Utalites/Theme";
-import { MdAssignmentInd , MdPendingActions, MdVerifiedUser} from "react-icons/md";
+import { MdAssignmentInd , MdPendingActions, MdVerifiedUser , MdOutlineFingerprint} from "react-icons/md";
 import { SiVerizon } from "react-icons/si";
 import {FcHighPriority , FcMediumPriority , FcLowPriority} from "react-icons/fc";
 import { blue, brown, green, purple } from '@mui/material/colors';
@@ -100,20 +100,17 @@ function createData(Title, Description, Priority, status, Project , Category, Co
 const heads = [ "Comments" , "Title", "Priority", "status", "Project" , "Category" , "Date"];
 
 function Row(props) {
-  const { row } = props;
+  const { row , usertype } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
-
-  const createReview = async () => {
+  const createComment = async () => {
     if (value.length > 0) {
       try {
-        const date = new Date().toISOString();
         let dataToSend = {
-          content: value,
-          created_time: (0, date.slice(0, date.indexOf("T"))),
+          comment: {content: value},
         };
-        await axios.post("", dataToSend);
+        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}`, dataToSend);
         setValue("");
       } catch (err) {
         alert(err.message);
@@ -126,8 +123,9 @@ function Row(props) {
     case 1: return <MdPendingActions color="#839413" fontSize={20}  />;
     case 2: return <MdAssignmentInd color="#001357" fontSize={20}  />; 
     case 3: return <SiVerizon color="#16591d" fontSize={20} />; 
+    }
   }
-  }
+
   const renderPeriority = (stat) => {
     switch(stat) {
     case 1: return <FcLowPriority title="Ordinary"  fontSize={20}  />;
@@ -138,11 +136,23 @@ function Row(props) {
 
   const renderCategory = (stat) => {
     switch(stat) {
-    case "serve": return <Typography variant="h5" sx={{bgcolor: blue[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Server</Typography>;
+    case "Service": return <Typography variant="h5" sx={{bgcolor: blue[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Service</Typography>;
     case "System": return <Typography variant="h5" sx={{bgcolor: brown[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >System</Typography>; 
-    case "NetworK": return <Typography variant="h5"  sx={{bgcolor: purple[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >NetworK</Typography>;
-    case "telecomunications":  return <Typography variant="h5"  sx={{bgcolor: "#663102" , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >telecomunications</Typography>; 
+    case "Network": return <Typography variant="h5"  sx={{bgcolor: purple[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >NetworK</Typography>;
+    case "Telecommunications":  return <Typography variant="h5"  sx={{bgcolor: "#663102" , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Telecommunications</Typography>; 
   }
+  }
+
+  const AssignTicket = async () => {
+    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}`, {body:{ 
+      admin: "admin",
+    }});
+  }
+
+  const CloseTicket = async () => {
+    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}` , {body:{ 
+      status: 3,
+    }});
   }
   
   return (
@@ -172,12 +182,19 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{paddingBottom:2}}>
-              <Typography variant="h3"> Description </Typography>
+            <Stack sx={{paddingBottom:2}} direction="column" >
+              <Stack direction="row">
+              <Typography variant="h3" sx={{display: "block", color: theme.palette.primary.main , paddingright:10}}> Description </Typography>
+              {usertype === 2  && row.status === 1 && 
+                      <IconButton aria-label="fingerprint" title="Assign TO my" color="primary" onclick={AssignTicket} >
+                      <MdOutlineFingerprint />
+                      </IconButton>
+              }
+              </Stack>
               <Typography variant="body1" width="100%">
                 {row.Description}
               </Typography>
-            </Box>
+            </Stack>
             <Typography variant="h3"> Comments </Typography>
             <Box sx={{ margin: 1 }}>
             {row.Comments.map((comment, index) => { 
@@ -223,27 +240,31 @@ function Row(props) {
                 spacing={1}
               >
                 <TextField
-                  label="Review"
-                  placeholder="give your Review"
+                  label="Comment"
+                  placeholder="give your Comment"
                   multiline
                   value={value}
                   sx={{ width: "90%"}}
                   onChange={(e) => setValue(e.target.value)}
                 />
                 <Stack
-                  direction="column"
+                  direction="row"
                   justifyContent="center"
                   alignItems="center"
                   spacing={0}
                 >
                   <Button
-                    onClick={createReview}
+                    onClick={createComment}
                     variant="text"
                     centerRipple
                     size="small"
+                    title="Submit Comment"
                     disabled={value.length === 0}
-                    startIcon={<BsFillArrowRightCircleFill />}
+                    startIcon={<BsFillArrowRightCircleFill size={25} />}
                   />
+                  <IconButton onClick={CloseTicket} title="Close Ticket" >
+                    <BsFillCheckCircleFill color={green[800]} size={25} />
+                  </IconButton>
                 </Stack>
               </Stack>
             }
@@ -260,36 +281,36 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-
-
-export default function Showtickets({api}) {
+export default function Showtickets({api , userType}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  
   const [rows, setrows] = React.useState([]);
 
-  const renderDate = () => {
-    const dat = new Date();
-    const day= dat.getFullYear() +
-    "-" +
-    (dat.getMonth() + 1) +
-    "-" +
-    dat.getDate() + "\n" + dat.toLocaleTimeString('en-US');
-    return day;
-  }
   const fetching = async () => {
     const resp = await axios.get(api);
     const tickets = resp.data.data.tickets;
     var _data = [];
     tickets.map((tic) => {
+      let _id = tic._id;
       let _title = tic.subject;
-      let _description = "shdjshdjshdjshajdhsjhdlksahljduifhndjfhnfkdof  jd kjl  fjewkjfkje eflkelfpuewjfaslf;al[f]peworpi457iw jehrjhkeyorwe8767r6e8wukjsdsamndbvhrui  uiueyoufhjdnf;spoeugiprfgkd yofuyruyiodsjvdmskvbojrug hefhldsasl'kfoeus";
-      let _Priority = randomIntFromInterval(1,3);
-      let _status = randomIntFromInterval(1,3);
-      let _Project = tic.projectName;
-      let _Category = "serve";
-      let _Date = renderDate(new Date());
+      let _description = tic.description;
+      let _Priority = tic.priority;
+      let _status = tic.staus;
+      let _Project = tic.project.name;
+      let _ProjectId = tic.project._id;
+      let _Category = tic.category;
+      let _Date = tic.createdAt;
       let _comments = tic.comments;
+      let _ClientID = tic.client._id;
+      let _ClientName = tic.client.name;
+      let _Clientphoto = tic.client.photo;
+      let _AdminID = tic.admin._id;
+      let _AdminName = tic.admin.name;
+      let _AdminPhoto = tic.admin.photo;
+      let _Attachments = tic.attachments;
+      let _Answer = tic.answer;
+
       const item = createData(_title ,_description,_Priority,_status ,_Project , _Category,_comments , _Date);
       _data.push(item);_data.push(item);_data.push(item);_data.push(item);_data.push(item);
     });
@@ -327,7 +348,7 @@ export default function Showtickets({api}) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row,index) => (
-              <Row key={index} row={row} />
+              <Row key={index} row={row} usertype={userType} />
           ))}
 
           {emptyRows > 0 && (
