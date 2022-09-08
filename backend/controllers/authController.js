@@ -34,6 +34,7 @@ const createAndSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  if (req.file) req.body.photo = req.file.filename;
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);
   createAndSendToken(newUser, 201, res);
