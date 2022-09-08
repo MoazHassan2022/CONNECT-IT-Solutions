@@ -23,6 +23,7 @@ const CreateTicket = () => {
   const [Description , setDescription] = React.useState("");
   const [DescriptionError , setDescriptionError] = React.useState(false);
 
+  const [Imgs , setImgs] = React.useState([]);
   
   const [ suggestedprojects, setsuggestedprojects ] =React.useState(["News"]) ;
   
@@ -39,20 +40,18 @@ const CreateTicket = () => {
       const response = await axios.post("/api/projects/create", {name:project});
       setProjectID(response.data.ProjectID);
     };
+    
+    let formData = new FormData();
+    formData.append('project', project);
+    formData.append('subject', Title);
+    formData.append('priority', Priority);
+    formData.append('description', Description);
+    formData.append('category', Category);
+    formData.append('attachments', Imgs)
 
     e.preventDefault()
-    let attach =[];
-    console.log( "project : ", project ,"title :", Title , "priority :", Priority , "Description :",  Description , "category :", Category);
       try {
-        const data = {
-          "project" : project, 
-          "subject" : Title,
-          "priority" : Priority,
-          "description" : Description,
-          "category" : Category,
-          "attachments" : attach,
-          }
-        await axios.post("/api/tickets", data, {
+        await axios.post("/api/tickets", formData, {
           headers: {
             "Authentication": "PPrr :"   // add token here
           },
@@ -63,15 +62,13 @@ const CreateTicket = () => {
     
   }
 
-
-
   const renderProjectPanel = (_new) => {
     console.log(_new, _new == 1);
     if(_new == 1){
       return <TextField
               label="New Project"
               type="text"
-              fullWidth
+              fullwidth
               required
               onChange={(event, newValue) => {
                 setProject(newValue);
@@ -97,6 +94,10 @@ const CreateTicket = () => {
 
   };
 
+  const UploadImgs = (e) => {
+    if (e) setImgs([...Imgs, e]);
+  }
+
 
   return (
         <form sx={{ display: 'flex', flexWrap: 'wrap', width: 100}} onSubmit={SubmitTicket} >
@@ -119,7 +120,7 @@ const CreateTicket = () => {
               id="outlined-password-input"
               label="Title"
               type="text"
-              fullWidth
+              fullwidth
               required
               error={TitleError}
               onChange={(e) => setTitle(e.target.value) }
@@ -170,7 +171,7 @@ const CreateTicket = () => {
                     required
                     defaultValue={1}
                     row
-                    onChange={(e) =>{ setPriority(e.target.value); console.log(e.target.value); } }
+                    onChange={(e) =>{ setPriority(e.target.value); } }
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"  
                   >
@@ -204,9 +205,9 @@ const CreateTicket = () => {
             </Stack>
 
             <Stack  direction="row" justifyContent="center" alignItems="flex-start" spacing={4}>
-              <Button sx={{marginLeft:14}} variant="contained" component="label">
+              <Button sx={{marginLeft:14}} variant="contained" component="label" onChange={UploadImgs} >
                   Upload Imgs
-                  <input hidden accept="image/*" multiple type="file" />
+                  <input hidden accept="image/*" multiple type="file"  />
               </Button>
               <Button variant="contained" endIcon={<MdSend />}  type="submit"  >
                 submit

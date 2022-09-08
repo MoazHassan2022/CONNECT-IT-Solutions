@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CreateTicket from "../../components/CreateTicket/CreateTicket";
 import ShowTickets from "../../components/ShowTickets/showTickets";
-import AdminProfile from "../AdminPage/showTickets";
 import theme from "../../Utalites/Theme";
 import { Avatar, Button, Drawer } from "@mui/material";
 import { useNavigate } from "react-router";
@@ -56,13 +55,19 @@ function a11yProps(index) {
 
   const [value, setValue] = React.useState(2);
     // 1 => customer , 2 => Admin
+    if(cookies.userType == undefined){
+      history("/login");
+    }
+    
     const usertype = cookies.userType;
+
+
     let tabs;
       
     if (usertype === 1) {
         tabs = ["submit ticket" , "Manage Your Tickets" , "Solved Tickets"];
     }else{
-        tabs = ["profile" , "Manage Your Tickets" , "Solved Tickets", "Pending Tickets" ];
+        tabs = ["Pending Tickets" , "Manage Your Tickets" , "Solved Tickets",  ];
     }
 
   const handleChange = (event, newValue) => {
@@ -74,11 +79,15 @@ function a11yProps(index) {
     history("/login");
   }
 
+  const UpdateImg = (e) =>{
+    //update img here
+  }
   return (
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: '105vh' }}
       >
-        <Drawer            variant="permanent"
+        <Drawer            
+        variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "27.9vh" },
@@ -94,11 +103,12 @@ function a11yProps(index) {
             onChange={handleChange}
             sx={{  borderRight: 2, borderColor: theme.palette.secondary.main ,  bgcolor: theme.palette.primary.main , width:'27.9vh', display: 'flex',  flexDirection: "column", alignItems: "flex-end",
                   height: '100vh', 
-          }}
+            }}
           >
-          <Button>
+          <Button onclick={(e) => UpdateImg(e)}>
           <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
-            <Avatar  alt="Waer" 
+          <input hidden accept="image/*" multiple type="file" />
+            <Avatar  alt={cookies.name} 
             src="./"
               sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
               />
@@ -129,7 +139,7 @@ function a11yProps(index) {
 
           { usertype == 2 && <>
               <TabPanel value={value} index={1}>
-              <AdminProfile /> 
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>
               </TabPanel>
 
               <TabPanel value={value} index={2} >
@@ -140,10 +150,7 @@ function a11yProps(index) {
               <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>      
               </TabPanel>
 
-              <TabPanel value={value} index={4} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>      
-              </TabPanel>
-                  </>
+                </>
           }
 
           { usertype == 1 && <>
