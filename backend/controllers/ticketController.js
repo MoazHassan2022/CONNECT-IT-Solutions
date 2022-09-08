@@ -4,12 +4,17 @@ const AppError = require('../utils/appError');
 const Ticket = require('./../models/ticketsModel');
 const makeRandomString = require('./../utils/randomString');
 const multer = require('multer');
+const sharp = require('sharp');
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/files/tickets');
   },
-  filename: (req, file, cb) => {
+  filename: async (req, file, cb) => {
+    console.log(file);
+    if (file.mimetype.startsWith('image')) {
+      return cb(null, `ticket-${makeRandomString()}-${Date.now()}.jpg`);
+    }
     cb(null, `ticket-${makeRandomString()}-${Date.now()}-${file.originalname}`);
   },
 });

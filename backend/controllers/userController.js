@@ -36,10 +36,10 @@ exports.uploadUserPhoto = upload.single('photo');
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
-  req.file.filename = `user-${makeRandomString()}-${Date.now()}.jpeg`;
+  req.file.filename = `user-${makeRandomString()}-${Date.now()}.jpg`;
   await sharp(req.file.buffer)
     .resize(500, 500)
-    .toFormat('jpeg')
+    .toFormat('jpg')
     .toFile(`public/img/users/${req.file.filename}`);
   next();
 });
