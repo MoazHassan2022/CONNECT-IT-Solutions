@@ -23,16 +23,14 @@
     background: rgb(247,200,21);
     background: linear-gradient(315deg, rgba(247,200,21,1) 0%, rgba(88,62,38,1) 56%);
     background-size: 200% 200%;  
-    height: 100%;
+    height: 102.6vh;
     width: 100%;
     animation: background 6s ease infinite;    
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: -20px 0 0px;
-    margin-top: 5rem;
 }
 
 h1 {
