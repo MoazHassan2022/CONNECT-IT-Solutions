@@ -11,10 +11,14 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const app = express();
 
 // MIDDLEWARES
+
+app.use(cors());
+
 app.use(function (req, res, next) {
   res.setHeader(
     'Access-Control-Allow-Origin',

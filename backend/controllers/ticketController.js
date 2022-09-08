@@ -97,7 +97,7 @@ exports.updateTicket = catchAsync(async (req, res, next) => {
     req.body.admin = req.user._id;
     req.body.status = 2;
   }
-  if (req.body.status) {
+  if (req.body.status === 3) {
     if (req.user.isAdmin)
       return next(new AppError('You are not a client!', 401));
     const ticket = await Ticket.findById(req.params.id);
