@@ -161,7 +161,6 @@ function Row(props) {
     }});
   }
 
-  console.log(row);
 
 
   return (
@@ -318,7 +317,8 @@ export default function Showtickets({api , userType}) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [cookies, setCookie] = useCookies(['user']);
 
-  
+  console.log(cookies);
+
   const [rows, setrows] = React.useState([]);
 
   const Fetching = async () => {
@@ -390,7 +390,6 @@ export default function Showtickets({api , userType}) {
             <TableCell align='left' key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >{head}</TableCell>
             );
             })}
-            
           </TableRow>
         </TableHead>
         <TableBody>
