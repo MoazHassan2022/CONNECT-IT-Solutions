@@ -1,11 +1,11 @@
+import { Typography } from "@mui/material";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../Utalites/useAuth";
 
 export const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  if (!user) {
+  console.log(user);
     // user is not authenticated
-    return <Navigate to="/login" />;
-  }
-  return children;
+    return <Typography>khfdhfjdhjfh</Typography>;
 };
+

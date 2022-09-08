@@ -1,19 +1,35 @@
 import classNames from "classnames";
 import { AiFillGithub , AiFillInstagram , AiFillTwitterCircle , AiFillLinkedin } from 'react-icons/ai';
-import { useState } from "react";
-import  logo  from "../../Utalites/outimports";
+import { useEffect, useState } from "react";
+import {useNavigate} from "react-router"
 import "./signinup.css";
 import { Alert, Snackbar } from "@mui/material";
 import axios from "axios";
+import {  useCookies } from "react-cookie";
 
 
  export const Signinup = () => {
+
+    const history = useNavigate();
+
     const [signin, setsignin] = useState(false);
     const [errorlogin, seterrorlogin] = useState(false);
     const [Name , setName] = useState("")
+    const [Email , setEmail] = useState("")
     const [Password , setPassword] = useState("");
-    ;
-    
+    const [PasswordConfirmation , setPasswordConfirmation] = useState("");
+    const [Photo , setPhoto] = useState("");
+    const [CompanyName , setCompanyName] = useState("");
+    const [cookies, setCookie] = useCookies(['user']);
+
+    useEffect(() => {
+        if(cookies.token){
+            history("/")
+        }
+
+    },[])
+
+
     var singcalssname = classNames(
         "container",
         {
@@ -21,35 +37,57 @@ import axios from "axios";
         }
     )
 
-    const  handlesignin = async (e) => {
-           /* e.preventDefault();
-              try {
-                const user = {
-                  "username" : "", 
-                  "password" : "",
-                  }
-                await axios.post("/api/tickets", user);
-              } catch (err) {
-                alert(err);
-                seterrorlogin(true);
-              }*/
-
-
-            
-
+    const  handlesignin = (e) => {
+        e.preventDefault();
+        const user = {
+            "email" : Email,
+            "password" : Password,
+        };
+        axios.post("http://127.0.0.1:3000/api/users/login", user)
+        .then(res => { 
+            setCookie('token', res.data.token, { path: '/' });
+            setCookie('email', res.data.data.user.email, { path: '/' });
+            setCookie('name', res.data.data.user.name, { path: '/' });
+            setCookie('photo', res.data.data.user.photo , { path: '/' });
+            setCookie('userType', res.data.data.user.isAdmin == 0 ? 1 : 2 , { path: '/' });
+            setCookie('companyName', res.data.data.user.companyName, { path: '/' });
+            setCookie('id', res.data.data.user._id, { path: '/' });
+            history("/"); 
+        } )
+        .catch((err) =>{
+            seterrorlogin(1);
+        })
     }
+
+    const  handlesignup = (e) => {
+        var resopnse;
+        e.preventDefault();
+        const user = {
+            "email" : Email,
+            "password" : Password,
+            "passwordConfirm" : Password,
+            "name": Name,
+            "photo": Photo,
+            "companyName": CompanyName,
+        };
+        fetch("/api/users/signup", user)
+        .then(res => { resopnse = res.json(); localStorage.setItem("token", res.token);  } )
+ 
+    }
+  
 
     return (
         <div className="loader-container">
             <div className={singcalssname} id="container">
             <div className="form-container sign-up-container">
-                <form action="#">
+                <form action="#" onSubmit={handlesignup}>
                     <h2>safacotech</h2>
                     <h1>Create Account</h1>
                     <span>or use your email for registration</span>
-                    <input type="text" placeholder="Name" />
-                    <input type="email" placeholder="Email" />
-                    <input type="password" placeholder="Password" />
+                    <input type="text" placeholder="Name" onChange={ (e) => setName(e.target.value)} />
+                    <input type="email" placeholder="Email" onChange={ (e) => setEmail(e.target.value)} />
+                    <input type="password" placeholder="Password" onChange={ (e) => setPassword(e.target.value)} />
+                    <input type="password" placeholder="Password Confirmation" onChange={ (e) => setPasswordConfirmation(e.target.value)} />
                     <button onClick={ () => setsignin(false) }>Sign Up</button>
                 </form>
             </div>
@@ -58,8 +96,8 @@ import axios from "axios";
                     <h2>safacotech</h2>
                     <h1>Sign in</h1>
                     <span>or use your account</span>
-                    <input type="email" placeholder="Email" onchange={ (e) => setName(e.target.value) } />
-                    <input type="password" placeholder="Password" onchange={ (e) => setPassword(e.target.value) } />
+                    <input type="email" placeholder="Email" onChange={ (e) => setEmail(e.target.value) } />
+                    <input type="password" placeholder="Password" onChange={ (e) => setPassword(e.target.value) } />
                     <a href="#">Forgot your password?</a>
                     <button >Sign In</button>
                 </form>
@@ -90,9 +128,9 @@ import axios from "axios";
             </div>
         </div>
         
-        <Snackbar open={errorlogin} autoHideDuration={6000} onClose={() => seterrorlogin(false) }>
-            <Alert onClose={() => seterrorlogin(false)} severity="error" sx={{ width: '100%' }}>
-                error in login!
+        <Snackbar sx={{ width:400, }} open={errorlogin} autoHideDuration={6000} onClose={() => seterrorlogin(false) }>
+            <Alert onClose={() => seterrorlogin(false)} severity="error" >
+                wrong E-mail or Password!!
             </Alert>
         </Snackbar>
 
@@ -100,3 +138,5 @@ import axios from "axios";
     </div>
     )
 }
+
+export default Signinup;

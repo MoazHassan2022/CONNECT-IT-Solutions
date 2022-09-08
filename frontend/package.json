@@ -15,6 +15,7 @@
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-redux": "^8.0.2",

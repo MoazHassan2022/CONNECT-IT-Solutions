@@ -28,6 +28,8 @@ import { MdAssignmentInd , MdPendingActions, MdVerifiedUser , MdOutlineFingerpri
 import { SiVerizon } from "react-icons/si";
 import {FcHighPriority , FcMediumPriority , FcLowPriority} from "react-icons/fc";
 import { blue, brown, green, purple } from '@mui/material/colors';
+import { useNavigate } from 'react-router';
+import { useCookies } from 'react-cookie';
 
 
 function TablePaginationActions(props) {
@@ -92,15 +94,19 @@ TablePaginationActions.propTypes = {
 };
 
 
-function createData(Title, Description, Priority, status, Project , Category, Comments , Date) {
-  return {Title, Description, Priority, status, Project , Category, Comments , Date };
+function createData(TicketID, Title, Description, Priority, status, Projectname , ProjectId , Category, Date,  Comments , clientID , clinetName , clientPhoto , adminID , adminName , adminPhoto, attachments , Answer  ) {
+  return {TicketID, Title, Description, Priority, status, Projectname , ProjectId , Category, Date,  Comments , clientID , clinetName , clientPhoto , adminID , adminName , adminPhoto, attachments , Answer };
 }
 
 
-const heads = [ "Comments" , "Title", "Priority", "status", "Project" , "Category" , "Date"];
+const heads = ["Details","Title", "Client","Admin","Priority","Status","Project","Category","Date" ];
+
 
 function Row(props) {
-  const { row , usertype } = props;
+  const [cookies] = useCookies(['user']);
+
+  const usertype = cookies.userType;
+  const { row  } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -138,7 +144,7 @@ function Row(props) {
     switch(stat) {
     case "Service": return <Typography variant="h5" sx={{bgcolor: blue[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Service</Typography>;
     case "System": return <Typography variant="h5" sx={{bgcolor: brown[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >System</Typography>; 
-    case "Network": return <Typography variant="h5"  sx={{bgcolor: purple[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >NetworK</Typography>;
+    case "Network": return <Typography variant="h5"  sx={{bgcolor: purple[700] , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Network</Typography>;
     case "Telecommunications":  return <Typography variant="h5"  sx={{bgcolor: "#663102" , color: "#fff" , borderRadius:3 , width: "auto",}} align="center" >Telecommunications</Typography>; 
   }
   }
@@ -154,11 +160,14 @@ function Row(props) {
       status: 3,
     }});
   }
-  
+
+  console.log(row);
+
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } , marginTop: "-5px" }} >
-        <TableCell>
+        <TableCell width={5}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -167,16 +176,13 @@ function Row(props) {
             {open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
           </IconButton>
         </TableCell>
-        
-        <TableCell component="th" scope="row">
-          {row.Title}
-        </TableCell>
-        <TableCell >{renderPeriority(row.Priority)}</TableCell>
-        <TableCell >
-        { renderstatus(row.status) }
-        </TableCell>
-        <TableCell >{row.Project}</TableCell>
-        <TableCell >{renderCategory(row.Category)}</TableCell>
+        <TableCell width={150}>{row.Title}</TableCell>
+        <TableCell width={150} >{row.clinetName}</TableCell>
+        <TableCell width={150}>{row.adminID != "-1" ? row.adminName : "NOt YET"}</TableCell>
+        <TableCell width={10} >{renderPeriority(row.Priority)}</TableCell>
+        <TableCell width={10}>{ renderstatus(row.status) }</TableCell>
+        <TableCell width={150}>{row.Projectname}</TableCell>
+        <TableCell width={150}>{renderCategory(row.Category)}</TableCell>
         <TableCell >{row.Date}</TableCell>
       </TableRow>
       <TableRow>
@@ -185,7 +191,7 @@ function Row(props) {
             <Stack sx={{paddingBottom:2}} direction="column" >
               <Stack direction="row">
               <Typography variant="h3" sx={{display: "block", color: theme.palette.primary.main , paddingright:10}}> Description </Typography>
-              {usertype === 2  && row.status === 1 && 
+              {usertype == 2  && row.status == 1 && 
                       <IconButton aria-label="fingerprint" title="Assign TO my" color="primary" onclick={AssignTicket} >
                       <MdOutlineFingerprint />
                       </IconButton>
@@ -194,21 +200,13 @@ function Row(props) {
               <Typography variant="body1" width="100%">
                 {row.Description}
               </Typography>
-            </Stack>
-            <Typography variant="h3"> Comments </Typography>
-            <Box sx={{ margin: 1 }}>
-            {row.Comments.map((comment, index) => { 
-              let fname = "mahmoud";
-              let lname = "mahmoud";
-              let Date = row.Date;
-              let content = comment.content;
-              return (
-              <ListItem alignItems="flex-start" key={index}>
+              {row.status === 3 && 
+             <ListItem alignItems="flex-start" >
               <ListItemAvatar>
-                <Avatar alt={fname}  />
+                <Avatar alt={row.adminName} src={row.adminPhoto} />
               </ListItemAvatar>
               <ListItemText
-                primary={`${fname} ${lname}`}
+                primary={`${row.adminName}`}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -218,14 +216,50 @@ function Row(props) {
                       color="text.primary"
                     >
                     </Typography>
-                    {content}
+                    <Typography variant="body1" sx={{fontSize: 20 , fontWeight: "bold"}}>
+                    {row.Answer}
+                    </Typography>
                   </React.Fragment>
                 }
               />
-                {(row.Comments.length === index + 1 && row.status === 3 ) && <Stack direction="column" justifyContent="center" alignItems="center" spacing={2} > <Typography sx={{color:green[400]}} alignSelf="center">Solved <MdVerifiedUser size={20} color={green[400]} /></Typography> </Stack>}
+              <Stack direction="column" justifyContent="center" alignItems="center" spacing={2} > <Typography sx={{color:green[400]}} alignSelf="center">Solved <MdVerifiedUser size={20} color={green[400]} /></Typography> </Stack>
+            </ListItem>
+            }
+            </Stack>
+            <Typography variant="h3"> Comments </Typography>
+            <Box sx={{ margin: 1 }}>
+            {row.Comments.map((comment, index) => { 
+              let name = comment.name;
+              let photo = comment.photo;
+              let Date = row.Date;
+              let content = comment.content;
+              return (
+              <ListItem alignItems="flex-start" key={index}>
+              <ListItemAvatar>
+                <Avatar alt={name} src={photo} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={name}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="subtitle2"
+                      color="text.primary"
+                    >
+                      {Date}
+                    </Typography>
+                    <Typography variant="h5" sx={{display: "block"}}>
+                    {content}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
             </ListItem>
               )
              })}
+             
             </Box>
             {row.status !== 3 && <ListItem alignItems="flex-start">
           <ListItemAvatar>
@@ -277,26 +311,36 @@ function Row(props) {
   );
 }
 
-function randomIntFromInterval(min, max) { // min and max included 
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
 
 export default function Showtickets({api , userType}) {
+  const history = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [cookies, setCookie] = useCookies(['user']);
+
   
   const [rows, setrows] = React.useState([]);
 
-  const fetching = async () => {
-    const resp = await axios.get(api);
-    const tickets = resp.data.data.tickets;
+  const Fetching = async () => {
+    var Tickets;
+    const auth = "Bearer " + cookies.token;
+    const resp = await axios.get(api , 
+      {headers:{
+        authorization: auth, 
+      }}
+      ).then(response =>{
+        Tickets = response.data.data.tickets; 
+      }).catch((error) => {
+          // message that he need to relogin
+          history("/login", { replace: true });
+        });
     var _data = [];
-    tickets.map((tic) => {
+    Tickets.map((tic) => {
       let _id = tic._id;
       let _title = tic.subject;
       let _description = tic.description;
       let _Priority = tic.priority;
-      let _status = tic.staus;
+      let _status = tic.status;
       let _Project = tic.project.name;
       let _ProjectId = tic.project._id;
       let _Category = tic.category;
@@ -305,14 +349,20 @@ export default function Showtickets({api , userType}) {
       let _ClientID = tic.client._id;
       let _ClientName = tic.client.name;
       let _Clientphoto = tic.client.photo;
-      let _AdminID = tic.admin._id;
-      let _AdminName = tic.admin.name;
-      let _AdminPhoto = tic.admin.photo;
+      let _AdminID = "-1";
+      let _AdminName = "";
+      let _AdminPhoto = "";
+      if(tic.admin){
+       _AdminID = tic.admin._id;
+       _AdminName = tic.admin.name;
+       _AdminPhoto = tic.admin.photo;
+    }
       let _Attachments = tic.attachments;
       let _Answer = tic.answer;
-
-      const item = createData(_title ,_description,_Priority,_status ,_Project , _Category,_comments , _Date);
-      _data.push(item);_data.push(item);_data.push(item);_data.push(item);_data.push(item);
+      const item = createData(_id , _title ,_description,_Priority,
+        _status ,_Project , _ProjectId , _Category,_Date ,_comments 
+        , _ClientID, _ClientName ,_Clientphoto ,_AdminID,_AdminName ,  _AdminPhoto , _Attachments , _Answer );
+      _data.push(item);
     });
     setrows(_data);
   };
@@ -328,7 +378,7 @@ export default function Showtickets({api , userType}) {
     setPage(0);
   };
 
-  React.useEffect(() => {fetching();}, []);
+  React.useEffect(() => {Fetching();}, []);
 
   return (
     <TableContainer component={Paper} sx={{marginTop:"-10px" , marginLeft:"28.5vh" , width:"166vh"}}>
@@ -337,7 +387,7 @@ export default function Showtickets({api , userType}) {
           <TableRow sx={{ marginBottom: "80px"}}>
           {heads.map((head, index) => {
               return (
-            <TableCell key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >{head}</TableCell>
+            <TableCell align='left' key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >{head}</TableCell>
             );
             })}
             
@@ -348,7 +398,7 @@ export default function Showtickets({api , userType}) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row,index) => (
-              <Row key={index} row={row} usertype={userType} />
+              <Row key={index} row={row} />
           ))}
 
           {emptyRows > 0 && (
@@ -357,9 +407,10 @@ export default function Showtickets({api , userType}) {
             </TableRow>
           )}
         </TableBody>
-        <TableFooter sx={{ height: 5 ,}} >
-          <TableRow >
+        <TableFooter sx={{ height: 5 ,}} width={500}>
+          <TableRow width={500}>
             <TablePagination
+            width={500}
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={3}
               count={rows.length}

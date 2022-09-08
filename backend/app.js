@@ -11,15 +11,19 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
+
 
 const app = express();
+
+app.use(cors());
+
 
 // MIDDLEWARES
 app.use(function (req, res, next) {
   res.setHeader(
     'Access-Control-Allow-Origin',
-    'http://localhost:3001',
-    'http://localhost:5000'
+    'http://localhost:3001'
   );
 
   // Request methods you wish to allow

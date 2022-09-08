@@ -10,6 +10,8 @@ import ShowTickets from "../../components/ShowTickets/showTickets";
 import AdminProfile from "../AdminPage/showTickets";
 import theme from "../../Utalites/Theme";
 import { Avatar, Button, Drawer } from "@mui/material";
+import { useNavigate } from "react-router";
+import { useCookies } from "react-cookie";
 
 
 
@@ -48,12 +50,13 @@ function a11yProps(index) {
 
   
  function MainPage() {
-  const [value, setValue] = React.useState(1);
+  const history = useNavigate();
+  const [cookies, removeCookie] = useCookies(['user']);
 
 
+  const [value, setValue] = React.useState(2);
     // 1 => customer , 2 => Admin
-    const usertype = 1;
-
+    const usertype = cookies.userType;
     let tabs;
       
     if (usertype === 1) {
@@ -64,8 +67,12 @@ function a11yProps(index) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(newValue);
   };
+
+  const logout = async () =>{
+    removeCookie("token");
+    history("/login");
+  }
 
   return (
       <Box
@@ -110,17 +117,23 @@ function a11yProps(index) {
             Safacotech
           </Typography>
           </Box>
+
+          <Box  sx={{ alignSelf: 'center', marginTop: '8vh' }} >
+            <Button sx={{ bgcolor: "#fff"}} onClick={logout}>
+               logout
+            </Button>
+          </Box>
         </Tabs>
         </Drawer>
 
 
-          { usertype === 2 && <>
+          { usertype == 2 && <>
               <TabPanel value={value} index={1}>
               <AdminProfile /> 
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/dummyInfo/fives"} userType={2} />
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} userType={2} />
               </TabPanel>
 
               <TabPanel value={value} index={3} >
@@ -133,7 +146,7 @@ function a11yProps(index) {
                   </>
           }
 
-          { usertype === 1 && <>
+          { usertype == 1 && <>
               <TabPanel value={value} index={1}>
               <CreateTicket /> 
               </TabPanel>
