@@ -6,7 +6,9 @@ const Project = require('./../models/projectsModel');
 exports.getAllProjects = catchAsync(async (req, res, next) => {
   let query = Project.find();
   if (req.query.name)
-    query = query.find({ name: { $regex: '^' + req.query.name } });
+    query = query.find({
+      name: { $regex: '^' + req.query.name.toLowerCase() },
+    });
   const projects = await query;
   res.status(200).json({
     status: 'success',
