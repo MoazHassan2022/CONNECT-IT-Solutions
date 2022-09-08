@@ -86,7 +86,7 @@ app.use((req, res, next) => {
 
 // Limit requests from sam IP address
 const limiter = rateLimit({
-  max: 100,
+  max: 5000,
   windowMs: 60 * 60 * 1000, // Ms: milliseconds, this will allow the same IP address to perform only 100 request per hour
   message:
     'Too many requests from this IP address, please try again in an hour!',
