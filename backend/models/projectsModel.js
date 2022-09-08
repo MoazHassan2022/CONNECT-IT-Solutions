@@ -14,6 +14,7 @@ const projectSchema = mongoose.Schema({
       4,
       'A ticket subject must have more than or equal to 10 characters',
     ],
+    lowercase: true,
   },
 });
 
