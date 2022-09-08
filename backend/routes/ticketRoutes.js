@@ -6,7 +6,11 @@ const router = express.Router();
 router
   .route('/')
   .get(authController.protect, ticketController.getAllTickets)
-  .post(authController.protect, ticketController.createTicket);
+  .post(
+    authController.protect,
+    ticketController.uploadTicketFiles,
+    ticketController.createTicket
+  );
 
 router
   .route('/:id')

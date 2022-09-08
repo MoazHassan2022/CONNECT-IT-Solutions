@@ -2,6 +2,23 @@ const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Ticket = require('./../models/ticketsModel');
+const makeRandomString = require('./../utils/randomString');
+const multer = require('multer');
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/files/tickets');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `ticket-${makeRandomString()}-${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({
+  storage: multerStorage,
+});
+
+exports.uploadTicketFiles = upload.array('attachments', 10);
 
 exports.getAllTickets = catchAsync(async (req, res, next) => {
   /*if (req.query.id) {
@@ -46,11 +63,9 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
   });
 });
 exports.createTicket = catchAsync(async (req, res, next) => {
-  if (req.body.attachments) {
-    req.body.attachments.forEach((element) => {
-      console.log('element');
-      /////////////////////// SAVE FILE TO SERVER /////////////////////
-    });
+  req.body.attachments = [];
+  if (req.files) {
+    req.files.forEach((file) => req.body.attachments.push(file.filename));
   }
   req.body.client = req.user._id;
   req.body.createdAt = req.requestTime;
