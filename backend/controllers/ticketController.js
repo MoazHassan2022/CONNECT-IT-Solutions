@@ -26,30 +26,13 @@ const upload = multer({
 exports.uploadTicketFiles = upload.array('attachments', 10);
 
 exports.getAllTickets = catchAsync(async (req, res, next) => {
-  /*if (req.query.id) {
-    const id = req.query.id;
-    // Send all tickets belonging to this id, maybe adminID or clientID
-    delete req.query.id;
-    const features = new APIFeatures(
-      Ticket.find({ $or: [{ adminID: id }, { clientID: id }] }),
-      req.query
-    )
-      .filter()
-      .sort()
-      .selectFields()
-      .paginate();
-    const tickets = await features.query;
-    return res.status(200).json({
-      status: 'success',
-      requestAt: req.requestTime,
-      results: tickets.length,
-      data: {
-        tickets,
-      },
-    });
-  }*/
+  let options = {};
+  if (req.query.subject) {
+    options.subject = { $regex: req.query.subject, $options: 'i' };
+    delete req.query.subject;
+  }
   if (!req.query['status']) req.query['status'] = 3;
-  const features = new APIFeatures(Ticket.find(), req.query)
+  const features = new APIFeatures(Ticket.find(options), req.query)
     .filter()
     .sort()
     .selectFields()
@@ -100,7 +83,11 @@ exports.updateTicket = catchAsync(async (req, res, next) => {
     req.body.comment['name'] = req.user.name;
     req.body.comment['photo'] = req.user.photo;
     req.body.comment['createdAt'] = req.requestTime;
-    if (req.body.comment.isAnswer && req.user.isAdmin)
+    if (
+      req.body.comment.isAnswer &&
+      req.user.isAdmin &&
+      req.user._id.toString() === ticket.admin._id.toString()
+    )
       ticket['answer'] = req.body.comment.content;
     ticket['comments'].push(req.body.comment);
     await ticket.save();
