@@ -1,5 +1,4 @@
-const fs = require('fs');
-const express = require('express');
+const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 const User = require('./../models/usersModel');
@@ -97,9 +96,19 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 exports.getMyTickets = catchAsync(async (req, res) => {
-  const tickets = await Ticket.find({
+  let options = {
     $or: [{ admin: req.user.id }, { client: req.user.id }],
-  });
+  };
+  if (req.query.subject) {
+    options.subject = { $regex: req.query.subject, $options: 'i' };
+    delete req.query.subject;
+  }
+  const features = new APIFeatures(Ticket.find(options), req.query)
+    .filter()
+    .sort()
+    .selectFields()
+    .paginate();
+  const tickets = await features.query;
   res.status(200).json({
     status: 'success',
     results: tickets.length,
