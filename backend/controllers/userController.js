@@ -111,6 +111,7 @@ exports.getMyTickets = catchAsync(async (req, res) => {
     .selectFields()
     .paginate();
   const tickets = await features.query;
+  if (req.query.sort && req.query.sort === '-createdAt') tickets.reverse();
   res.status(200).json({
     status: 'success',
     results: tickets.length,
