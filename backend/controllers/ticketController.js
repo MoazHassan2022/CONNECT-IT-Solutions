@@ -90,6 +90,7 @@ exports.getTicket = catchAsync(async (req, res, next) => {
   });
 });
 exports.updateTicket = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   if (req.body.comment) {
     let ticket = await Ticket.findById(req.params.id);
     req.body.comment['name'] = req.user.name;

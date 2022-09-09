@@ -106,29 +106,32 @@ function Row(props) {
   const [cookies] = useCookies(['user']);
 
   const usertype = cookies.userType;
-  const { row  } = props;
+  const [ row, setRow ] = React.useState(props.row);
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
-  const createComment = async () => {
+  const createComment = async (e) => {
+    e.preventDefault();
+
     if (value.length > 0) {
-      try {
         let dataToSend = {
-          comment: {content: value},
+          "comment": {"content": value},
         };
-        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}`, dataToSend);
+        const auth = "Bearer " + cookies.token;
+        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`, dataToSend, {headers:{
+          authorization: auth, 
+        }}).then(res => {
+          setRow( prepareRow(res.data.data.ticket) );
+        }).catch(err => console.log(err));
         setValue("");
-      } catch (err) {
-        alert(err.message);
-      }
     }
   };
 
   const renderstatus = (stat) => {
     switch(stat) {
-    case 1: return <MdPendingActions color="#839413" fontSize={20}  />;
-    case 2: return <MdAssignmentInd color="#001357" fontSize={20}  />; 
-    case 3: return <SiVerizon color="#16591d" fontSize={20} />; 
+    case 1: return <MdPendingActions color="#839413" fontSize={20} label="Pending"  />;
+    case 2: return <MdAssignmentInd color="#001357" fontSize={20} label="Assigned" />; 
+    case 3: return <SiVerizon color="#16591d" fontSize={20} label="Solved" />; 
     }
   }
 
@@ -150,18 +153,22 @@ function Row(props) {
   }
 
   const AssignTicket = async () => {
-    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}`, {body:{ 
-      admin: "admin",
-    }});
+    const auth = "Bearer " + cookies.token;
+    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`,
+      {admin: "admin"}, {headers:{
+      authorization: auth, 
+    }}).then(res => { setRow( prepareRow(res.data.data.ticket)); console.log(res); } ).catch(err => console.log(err));
+
   }
 
   const CloseTicket = async () => {
-    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row._id}` , {body:{ 
+    const auth = "Bearer " + cookies.token;
+    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}` , { 
       status: 3,
-    }});
+    }, {headers:{
+      authorization: auth, 
+    }}).then( res => { setRow( prepareRow(res.data.data.ticket)); console.log(res.data.data.ticket); }  ).catch(err => console.log(err));
   }
-
-
 
   return (
     <React.Fragment>
@@ -266,6 +273,7 @@ function Row(props) {
           </ListItemAvatar>
           <ListItemText
             secondary={
+              <form onSubmit={createComment} >
               <Stack
                 direction="row"
                 justifyContent="center"
@@ -287,7 +295,7 @@ function Row(props) {
                   spacing={0}
                 >
                   <Button
-                    onClick={createComment}
+                    type="submit"
                     variant="text"
                     centerRipple
                     size="small"
@@ -300,6 +308,7 @@ function Row(props) {
                   </IconButton>
                 </Stack>
               </Stack>
+              </form>
             }
           />
         </ListItem>}
@@ -311,32 +320,9 @@ function Row(props) {
 }
 
 
-export default function Showtickets({api , userType}) {
-  const history = useNavigate();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [cookies, setCookie] = useCookies(['user']);
+const prepareRow = (tic) =>{
 
-  console.log(cookies);
-
-  const [rows, setrows] = React.useState([]);
-
-  const Fetching = async () => {
-    var Tickets;
-    const auth = "Bearer " + cookies.token;
-    const resp = await axios.get(api , 
-      {headers:{
-        authorization: auth, 
-      }}
-      ).then(response =>{
-        Tickets = response.data.data.tickets; 
-      }).catch((error) => {
-          // message that he need to relogin
-          history("/login", { replace: true });
-        });
-    var _data = [];
-    Tickets.map((tic) => {
-      let _id = tic._id;
+  let _id = tic._id;
       let _title = tic.subject;
       let _description = tic.description;
       let _Priority = tic.priority;
@@ -362,12 +348,40 @@ export default function Showtickets({api , userType}) {
       const item = createData(_id , _title ,_description,_Priority,
         _status ,_Project , _ProjectId , _Category,_Date ,_comments 
         , _ClientID, _ClientName ,_Clientphoto ,_AdminID,_AdminName ,  _AdminPhoto , _Attachments , _Answer );
+        return item;
+}
+
+
+export default function Showtickets({api , userType}) {
+  const history = useNavigate();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [cookies, setCookie] = useCookies(['user']);
+
+
+
+  const [rows, setrows] = React.useState([]);
+
+  const Fetching = async () => {
+    var Tickets;
+    const auth = "Bearer " + cookies.token;
+    const resp = await axios.get(api , 
+      {headers:{
+        authorization: auth, 
+      }}
+      ).then(response =>{
+        Tickets = response.data.data.tickets; 
+      }).catch((error) => {
+          history("/login", { replace: true });
+        });
+    var _data = [];
+    Tickets.map((tic) => {
+      const item = prepareRow(tic);
       _data.push(item);
     });
     setrows(_data);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -378,7 +392,7 @@ export default function Showtickets({api , userType}) {
     setPage(0);
   };
 
-  React.useEffect(() => {Fetching();}, []);
+  React.useEffect(() => { Fetching(); }, []);
 
   return (
     <TableContainer component={Paper} sx={{marginTop:"-10px" , marginLeft:"28.5vh" , width:"166vh"}}>

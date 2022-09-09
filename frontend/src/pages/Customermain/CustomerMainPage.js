@@ -11,6 +11,8 @@ import theme from "../../Utalites/Theme";
 import { Avatar, Button, Drawer } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
+import { Stack } from "@mui/system";
+import { Alert,  Snackbar } from "@mui/material";
 
 
 
@@ -49,22 +51,32 @@ function a11yProps(index) {
 
   
  function MainPage() {
+
   const history = useNavigate();
-  const [cookies, removeCookie] = useCookies(['user']);
+  const [cookies, setCookie ,  removeCookie] = useCookies(['user']);
+  const [imgnew , seimgnew]  = React.useState();
+  const [img , setImg]  = React.useState();
+  const [wantUpdate, setWantUpdate ]= React.useState(false);
+  const [uploadPhotoError, setuploadPhotoError] = React.useState(false);
 
 
-  const [value, setValue] = React.useState(2);
-    // 1 => customer , 2 => Admin
+  const [value, setValue] = React.useState(1);
+
+  React.useEffect(() => {
     if(cookies.userType == undefined){
       history("/login");
     }
-    
+    const auth = "Bearer " + cookies.token;
+    setImg(`http://127.0.0.1:3000/img/users/${cookies.photo}`);
+    },[])
+
+    // 1 => customer , 2 => Admin
     const usertype = cookies.userType;
 
-
+    console.log(usertype , cookies.userType  , usertype == 1);
     let tabs;
       
-    if (usertype === 1) {
+    if (usertype == 1) {
         tabs = ["submit ticket" , "Manage Your Tickets" , "Solved Tickets"];
     }else{
         tabs = ["Pending Tickets" , "Manage Your Tickets" , "Solved Tickets",  ];
@@ -79,21 +91,77 @@ function a11yProps(index) {
     history("/login");
   }
 
-  const UpdateImg = (e) =>{
+  const UpdateImg = async () =>{
     //update img here
+    if(imgnew.target.files[0] != undefined){
+    let formData = new FormData();
+    formData.append("photo", imgnew.target.files[0]);
+    const auth = "Bearer " + cookies.token;
+    await axios.patch("http://127.0.0.1:3000/api/users/updateMe",formData,{headers:{
+      authorization: auth, 
+    }}).then(res =>{
+      setCookie("photo",res.data.data.user.photo);
+    });
+    window.location.reload();
+  }else{
+    setuploadPhotoError(true);
   }
+
+  }
+
+  
+
+
+  const userPhoto = () => {
+    if(wantUpdate) {return (
+    <Stack direction="column">
+    <Button aria-label="upload picture" component="label" onClick={(e) => { seimgnew(e); setWantUpdate(true);} }>
+      <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
+        <Avatar  
+        src={img}
+        alt={cookies.name} 
+          sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
+          />
+      </Box>
+      <input hidden accept="image/*" multiple type="file" />
+    </Button>
+     <Button sx={{ bgcolor: theme.palette.secondary.main}} variant="contained" component="label" onClick={UpdateImg}>
+              Update
+    </Button>
+  </Stack>)
+  }
+  else{ return(
+  <Stack direction="column">
+  <Button aria-label="upload picture" component="label" onClick={(e) => { seimgnew(e); setWantUpdate(true);} }>
+    <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
+      <Avatar  
+      src={img}
+      alt={cookies.name} 
+        sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
+        />
+    </Box>
+    <input hidden accept="image/*" multiple type="file" />
+  </Button>
+</Stack>
+)
+}
+  }
+
   return (
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: '105vh' }}
       >
-        <Drawer            
+        <Stack direction="column"></Stack>
+        <Drawer        
+      
         variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "27.9vh" },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "27.9vh", bgcolor: theme.palette.primary.main },
           }}
           open
           >
+          {userPhoto()}
           <Tabs
             orientation="vertical"
             variant="scrollable"
@@ -105,20 +173,11 @@ function a11yProps(index) {
                   height: '100vh', 
             }}
           >
-          <Button onclick={(e) => UpdateImg(e)}>
-          <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
-          <input hidden accept="image/*" multiple type="file" />
-            <Avatar  alt={cookies.name} 
-            src="./"
-              sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
-              />
-            </Box>
-          </Button>
 
 
           {tabs.map(((t, index) =>{
               return (
-                  <Tab key={index} label={t} {...a11yProps(tabs.indexOf(t) +1)} />
+                  <Tab key={index} label={t} {...a11yProps(tabs.indexOf(t))} />
               );
           })) }
 
@@ -138,38 +197,42 @@ function a11yProps(index) {
 
 
           { usertype == 2 && <>
-              <TabPanel value={value} index={1}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>
+              <TabPanel value={value} index={0}>
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status="}/>
+              </TabPanel>
+
+              <TabPanel value={value} index={1} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} />
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} userType={2} />
-              </TabPanel>
-
-              <TabPanel value={value} index={3} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={2}/>      
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} />      
               </TabPanel>
 
                 </>
           }
 
           { usertype == 1 && <>
-              <TabPanel value={value} index={1}>
+              <TabPanel value={value} index={0}>
               <CreateTicket /> 
               </TabPanel>
 
-              <TabPanel value={value} index={2}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} userType={1} />      
+              <TabPanel value={value} index={1} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"}  />      
               </TabPanel>
 
-              <TabPanel value={value} index={3}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} userType={1} />      
+              <TabPanel value={value} index={2} >
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"}  />      
               </TabPanel>
                   </>
           }
           
-          
 
+          <Snackbar sx={{ width:400, }} open={uploadPhotoError} autoHideDuration={6000} onClose={() => setuploadPhotoError(false) }>
+            <Alert onClose={() => setuploadPhotoError(false)} severity="error" >
+                Please attach a vaild image!!
+            </Alert >
+        </Snackbar>
       </Box>
   );
 }

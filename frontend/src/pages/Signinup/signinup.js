@@ -32,8 +32,7 @@ import {IoPersonCircle} from "react-icons/io5"
     
 
     useEffect(() => {
-        console.log(cookies , cookies.token , cookies.token != "undefined");
-        if(cookies.token != "undefined"){
+        if(cookies.token != undefined){
             history("/")
         }
 
@@ -70,6 +69,8 @@ import {IoPersonCircle} from "react-icons/io5"
     }
 
     const  handlesignup = (e) => {
+        e.preventDefault();
+
         var resopnse;
         let formData = new FormData();
         formData.append('email', Email);
@@ -77,18 +78,9 @@ import {IoPersonCircle} from "react-icons/io5"
         formData.append('passwordConfirm', PasswordConfirmation);
         formData.append('name', Name);
         formData.append('companyName', CompanyName);
-        formData.append('Photo', Photo);
+        formData.append('photo', Photo.target.files[0]);
 
-        e.preventDefault();
-        const user = {
-            "email" : Email,
-            "password" : Password,
-            "passwordConfirm" : PasswordConfirmation,
-            "name": Name,
-            "photo": Photo,
-            "companyName": CompanyName,
-        };
-        axios.post("http://127.0.0.1:3000/api/users/signup", user)
+        axios.post("http://127.0.0.1:3000/api/users/signup", formData)
         .then(res => { 
             setCookie('token', res.data.token, { path: '/' });
             setCookie('email', res.data.data.user.email, { path: '/' });
@@ -100,6 +92,7 @@ import {IoPersonCircle} from "react-icons/io5"
             history("/"); 
         } )
         .catch((err) =>{
+            console.log(err);
             seterrorSignup(1);
         })
     }
@@ -158,7 +151,7 @@ import {IoPersonCircle} from "react-icons/io5"
                         <input hidden accept="image/*" type="file" />
                         </Button>
 
-                        <Button onClick={ () => handlesignup() }>Sign Up</Button>
+                        <Button type="submit">Sign Up</Button>
                         </Stack>
 
                     </Stack>

@@ -45,7 +45,10 @@ app.use(function (req, res, next) {
 });
 
 // Set security HTTP headers
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+})
+);
 
 // Development logging
 if (process.env.NODE_ENV === 'dev') app.use(morgan('dev'));
