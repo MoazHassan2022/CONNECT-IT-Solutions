@@ -64,14 +64,7 @@ app.use(xss()); // prevent dangerous of html and javascript code in the request
 // Prevent paramete pollution by preventing for example writing sort twice
 app.use(
   hpp({
-    whitelist: [
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price',
-    ], // keep multiple durations and all of these
+    whitelist: ['status', 'priority'], // keep multiple durations and all of these
   })
 );
 
