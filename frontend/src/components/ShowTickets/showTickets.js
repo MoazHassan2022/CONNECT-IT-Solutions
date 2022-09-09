@@ -21,15 +21,23 @@ import Typography from '@mui/material/Typography';
 import {MdKeyboardArrowDown,  MdKeyboardArrowUp} from 'react-icons/md';
 import {BsFillArrowRightCircleFill , BsFillCheckCircleFill} from 'react-icons/bs';
 import axios from 'axios';
-import { Avatar, Button, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
+import { Avatar, Button, InputBase, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
 import { Stack } from '@mui/system';
-import theme from "../../Utalites/Theme";
 import { MdAssignmentInd , MdPendingActions, MdVerifiedUser , MdOutlineFingerprint} from "react-icons/md";
 import { SiVerizon } from "react-icons/si";
 import {FcHighPriority , FcMediumPriority , FcLowPriority} from "react-icons/fc";
 import { blue, brown, green, purple } from '@mui/material/colors';
 import { useNavigate } from 'react-router';
 import { useCookies } from 'react-cookie';
+import ShowAttachments from './showAttachments';
+import {FaSearch} from "react-icons/fa"
+import styled from '@emotion/styled';
+import { alpha } from '@mui/material/styles';
+import JustText from './Head/JustText';
+import AutoCompleteChoseMe from './Head/AutoCompleteChoseMe';
+import Sort from './Head/Sort';
+import ListSelect from './Head/ListSelect';
+import AutoPreview from './Head/AutoPreview';
 
 
 function TablePaginationActions(props) {
@@ -99,16 +107,19 @@ function createData(TicketID, Title, Description, Priority, status, Projectname 
 }
 
 
-const heads = ["Details","Title", "Client","Admin","Priority","Status","Project","Category","Date" ];
-
 
 function Row(props) {
-  const [cookies] = useCookies(['user']);
+  const theme = useTheme();
 
+  const [cookies] = useCookies(['user']);
   const usertype = cookies.userType;
   const [ row, setRow ] = React.useState(props.row);
+
+  
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+
 
   const createComment = async (e) => {
     e.preventDefault();
@@ -127,13 +138,15 @@ function Row(props) {
     }
   };
 
+
   const renderstatus = (stat) => {
     switch(stat) {
-    case 1: return <MdPendingActions color="#839413" fontSize={20} label="Pending"  />;
-    case 2: return <MdAssignmentInd color="#001357" fontSize={20} label="Assigned" />; 
-    case 3: return <SiVerizon color="#16591d" fontSize={20} label="Solved" />; 
+    case 1: return <MdPendingActions color="#839413" fontSize={20} title="Pending"  />;
+    case 2: return <MdAssignmentInd color="#001357" fontSize={20} title="Assigned" />; 
+    case 3: return <SiVerizon color="#16591d" fontSize={20} title="Solved" />; 
     }
   }
+
 
   const renderPeriority = (stat) => {
     switch(stat) {
@@ -142,6 +155,7 @@ function Row(props) {
     case 3: return <FcHighPriority title="Critical" fontSize={20} />; 
   }
   }
+
 
   const renderCategory = (stat) => {
     switch(stat) {
@@ -152,6 +166,7 @@ function Row(props) {
   }
   }
 
+
   const AssignTicket = async () => {
     const auth = "Bearer " + cookies.token;
     await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`,
@@ -161,6 +176,7 @@ function Row(props) {
 
   }
 
+
   const CloseTicket = async () => {
     const auth = "Bearer " + cookies.token;
     await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}` , { 
@@ -169,6 +185,47 @@ function Row(props) {
       authorization: auth, 
     }}).then( res => { setRow( prepareRow(res.data.data.ticket)); console.log(res.data.data.ticket); }  ).catch(err => console.log(err));
   }
+
+
+  const ConsiderComment = async (e) => {
+    e.preventDefault();
+    if (value.length > 0) {
+        let dataToSend = {
+          "comment": {
+            "content": value, 
+            "isAnswer": true
+        },
+        };
+        const auth = "Bearer " + cookies.token;
+        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`, dataToSend, {headers:{
+          authorization: auth, 
+        }}).then(res => {
+          setRow( prepareRow(res.data.data.ticket) );
+          console.log(res.data.data.ticket);
+        }).catch(err => console.log(err));
+        setValue("");
+    }
+  };
+
+
+
+  const renderSolved = () => {
+    if(cookies.userType == 1){
+      return (
+        <IconButton onClick={CloseTicket} title="Close Ticket" >
+                    <BsFillCheckCircleFill color={green[800]} size={25} />
+        </IconButton>
+      )
+    }else {
+      return(
+      <IconButton onClick={ConsiderComment} title="Consider This As Answer" >
+                    <BsFillCheckCircleFill color={green[800]} size={25} />
+      </IconButton>
+      )
+    }
+
+  }
+
 
   return (
     <React.Fragment>
@@ -198,14 +255,28 @@ function Row(props) {
               <Stack direction="row">
               <Typography variant="h3" sx={{display: "block", color: theme.palette.primary.main , paddingright:10}}> Description </Typography>
               {usertype == 2  && row.status == 1 && 
-                      <IconButton aria-label="fingerprint" title="Assign TO my" color="primary" onclick={AssignTicket} >
+                      <IconButton aria-label="fingerprint" title="Assign TO my" color="primary" onClick={AssignTicket} >
                       <MdOutlineFingerprint />
                       </IconButton>
               }
               </Stack>
+              <Stack  direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={2}
+              >
               <Typography variant="body1" width="100%">
                 {row.Description}
               </Typography>
+              <Box>
+                {
+                row.attachments.length > 0 &&             
+                <ShowAttachments attachments={row.attachments} />
+                } 
+              </Box>
+
+              </Stack>
+
               {row.status === 3 && 
              <ListItem alignItems="flex-start" >
               <ListItemAvatar>
@@ -303,9 +374,7 @@ function Row(props) {
                     disabled={value.length === 0}
                     startIcon={<BsFillArrowRightCircleFill size={25} />}
                   />
-                  <IconButton onClick={CloseTicket} title="Close Ticket" >
-                    <BsFillCheckCircleFill color={green[800]} size={25} />
-                  </IconButton>
+                  {renderSolved()}
                 </Stack>
               </Stack>
               </form>
@@ -352,25 +421,28 @@ const prepareRow = (tic) =>{
 }
 
 
+const heads = [["Details", 0], ["Title" , 1], ["Client", 1], ["Admin", 1], ["Priority", 2],["Status", 2],["Project" , 1] , ["Category", 3], ["Date" , 2] ];
+
+
 export default function Showtickets({api , userType}) {
   const history = useNavigate();
+  const theme = useTheme();
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [cookies, setCookie] = useCookies(['user']);
 
-
-
   const [rows, setrows] = React.useState([]);
 
-  const Fetching = async () => {
+  const Fetching = async (fetapi) => {
     var Tickets;
     const auth = "Bearer " + cookies.token;
-    const resp = await axios.get(api , 
+    const resp = await axios.get(fetapi , 
       {headers:{
-        authorization: auth, 
+        authorization: auth,
       }}
       ).then(response =>{
-        Tickets = response.data.data.tickets; 
+        Tickets = response.data.data.tickets;
       }).catch((error) => {
           history("/login", { replace: true });
         });
@@ -382,6 +454,7 @@ export default function Showtickets({api , userType}) {
     setrows(_data);
   };
 
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -392,27 +465,49 @@ export default function Showtickets({api , userType}) {
     setPage(0);
   };
 
-  React.useEffect(() => { Fetching(); }, []);
+  React.useEffect(() => { Fetching(api); }, []);
+
+  const [orderBy, setOrderBy] = React.useState('Date');
+  const [order, setOrder] = React.useState('asc');
+  const [selectVal , setSelectVal] = React.useState('all');
+
+  const HeadCells = (num) =>{
+    console.log(num , num === 1, typeof(num) )
+
+    if(num === 0) return <JustText text="Details" index={Math.random() * 500} />; // Detail -> Text
+    if(num === 1) return <AutoPreview setAttID={(seachedtitle) => {Fetching(`http://127.0.0.1:3000/api/projects?title${seachedtitle}`);}} />; // Title -> AutoPreview
+    if(num === 2) return <JustText text="Client" index={Math.random() * 500} />; // Client -> -> Text
+    if(num === 3) return <JustText text="Admin" index={Math.random() * 500}/>; // Admin -> Text
+    if(num === 4) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Priority" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?priority`) } />;  // Priority -> sort
+    if(num === 5) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Stauts" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?Stauts`) }/>;  // Stauts  -> sort
+    if(num === 6) return <AutoCompleteChoseMe setAttID={(newtext) => { console.log(newtext); }} apiFeatchFrom="http://127.0.0.1:3000/api/projects?name=" />;  // Project -> AutoComplete
+    if(num === 7) return <ListSelect val={selectVal}  setval={ (newva) => { setSelectVal(newva); Fetching(`http://127.0.0.1:3000/api/projects?title=${newva}`);} } options={ ["all" , "Network" , "System", "Service" , "Telecommunications"] } />; // Category -> list
+    if(num === 8) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Date" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?Date`) }/>; // Date -> sort
+
+  }
 
   return (
     <TableContainer component={Paper} sx={{marginTop:"-10px" , marginLeft:"28.5vh" , width:"166vh"}}>
       <Table  aria-label="custom pagination table">
       <TableHead sx={{ bgcolor: theme.palette.primary.main , color: theme.palette.secondary.main , maringTop:50 }} >
           <TableRow sx={{ marginBottom: "80px"}}>
-          {heads.map((head, index) => {
+          {[0 ,1,2,3,4,5,6,7,8].map((head, index) => {
               return (
-            <TableCell align='left' key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >{head}</TableCell>
+                HeadCells(head)
             );
             })}
           </TableRow>
         </TableHead>
         <TableBody>
-          {(rowsPerPage > 0
+          {
+          
+          (rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row,index) => (
-              <Row key={index} row={row} />
-          ))}
+          ).map((_row,index) => {
+              return( <Row key={index + page * rowsPerPage} row={_row} />)
+            }
+          )}
 
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>

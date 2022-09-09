@@ -47,7 +47,7 @@ const CreateTicket = () => {
 
     if(NewProject == 1){
       console.log(project);
-      const response = await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
+      await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
         authorization: auth, 
       }}).then(res => {setProjectID(res.data.data.project._id);}).catch(err => console.log(err));
     };
@@ -60,18 +60,20 @@ const CreateTicket = () => {
     formData.append('category', Category);
 
 
-    for (let i = 0; i < Imgs[0].target.files.length; i++) {
-      formData.append('attachments', Imgs[0].target.files.item(i));
+    if(Imgs[0] != undefined){
+      for (let i = 0; i < Imgs[0].target.files.length; i++) {
+        formData.append('attachments', Imgs[0].target.files.item(i));
+      }
     }
-  
-    
+
     //console.log(Imgs , Imgs[0].target.files);
     await axios.post("http://127.0.0.1:3000/api/tickets", formData,  
     {headers:{
       authorization: auth, 
     }}).then(res => {
+      console.log(res);
       setsuccesCreate(true);
-      console.log(res)
+      //setTimeout(window.location.reload() , 5000 );
     }).catch(error => console.log(error));
 
   }
@@ -80,7 +82,7 @@ const CreateTicket = () => {
     const auth = "Bearer " + cookies.token;
      const res = await axios.get(`http://127.0.0.1:3000/api/projects?name=${text}`, {headers:{
       authorization: auth, 
-    }});
+    }});  
     return [res.data.results, res.data.data.projects];
   }
 
@@ -93,7 +95,6 @@ const CreateTicket = () => {
               required
               onChange={(e) => {
                 setProject(e.target.value);
-                console.log(e.target.value);
                 }}
               sx={{ width: 300, marginLeft:6 }}
               />
@@ -197,7 +198,6 @@ const CreateTicket = () => {
                 <MenuItem value={"Network"}>Network</MenuItem>
                 <MenuItem value={"Telecommunications"}>Telecommunications</MenuItem>
               </Select>
-
                   </Stack>
 
               <Stack direction="column" justifyContent="center" alignItems="center">
