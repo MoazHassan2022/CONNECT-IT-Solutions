@@ -75,7 +75,7 @@ const userSchema = mongoose.Schema({
       40,
       'A user name must have less than or equal to 40 characters',
     ],
-    minLength: [4, 'A user name must have more than or equal to 8 characters'],
+    minLength: [2, 'A user name must have more than or equal to 2 characters'],
   },
   isAdmin: {
     type: Boolean,
