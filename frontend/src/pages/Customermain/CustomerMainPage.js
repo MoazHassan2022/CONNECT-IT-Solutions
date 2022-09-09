@@ -73,7 +73,6 @@ function a11yProps(index) {
     // 1 => customer , 2 => Admin
     const usertype = cookies.userType;
 
-    console.log(usertype , cookies.userType  , usertype == 1);
     let tabs;
       
     if (usertype == 1) {
@@ -198,7 +197,7 @@ function a11yProps(index) {
 
           { usertype == 2 && <>
               <TabPanel value={value} index={0}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status="}/>
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status=1"}/>
               </TabPanel>
 
               <TabPanel value={value} index={1} >
