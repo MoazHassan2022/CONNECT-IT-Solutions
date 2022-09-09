@@ -7,12 +7,12 @@ const ticketSchema = mongoose.Schema({
     required: [true, 'A ticket must have a subject!'],
     trim: true, // Remove all the white space in the beginning or end of the field
     maxLength: [
-      150,
-      'A ticket subject must have less than or equal to 150 characters',
+      20,
+      'A ticket subject must have less than or equal to 20 characters',
     ],
     minLength: [
       4,
-      'A ticket subject must have more than or equal to 10 characters',
+      'A ticket subject must have more than or equal to 4 characters',
     ],
   },
   description: {
