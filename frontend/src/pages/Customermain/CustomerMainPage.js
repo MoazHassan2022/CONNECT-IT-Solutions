@@ -201,11 +201,11 @@ function a11yProps(index) {
               </TabPanel>
 
               <TabPanel value={value} index={1} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"} />
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets?sort=createdAt"} tabNumber={1}  />
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"} />      
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?sort=createdAt"} tabNumber={2}  />      
               </TabPanel>
 
                 </>
@@ -217,11 +217,11 @@ function a11yProps(index) {
               </TabPanel>
 
               <TabPanel value={value} index={1} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets"}  />      
+              <ShowTickets api={"http://127.0.0.1:3000/api/users/myTickets?sort=createdAt"} tabNumber={1}  />      
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets"}  />      
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?sort=createdAt"} tabNumber={2}  />      
               </TabPanel>
                   </>
           }

@@ -239,7 +239,7 @@ function Row(props) {
             {open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
           </IconButton>
         </TableCell>
-        <TableCell width={150}>{row.Title}</TableCell>
+        <TableCell width={150} sx={{maxWidth: 50, overflow:"hidden"}}>{row.Title}</TableCell>
         <TableCell width={150} >{row.clinetName}</TableCell>
         <TableCell width={150}>{row.adminID != "-1" ? row.adminName : "NOt YET"}</TableCell>
         <TableCell width={10} >{renderPeriority(row.Priority)}</TableCell>
@@ -424,7 +424,7 @@ const prepareRow = (tic) =>{
 const heads = [["Details", 0], ["Title" , 1], ["Client", 1], ["Admin", 1], ["Priority", 2],["Status", 2],["Project" , 1] , ["Category", 3], ["Date" , 2] ];
 
 
-export default function Showtickets({api , userType}) {
+export default function Showtickets({api , tabNumber}) {
   const history = useNavigate();
   const theme = useTheme();
 
@@ -472,17 +472,16 @@ export default function Showtickets({api , userType}) {
   const [selectVal , setSelectVal] = React.useState('all');
 
   const HeadCells = (num) =>{
-    console.log(num , num === 1, typeof(num) )
 
     if(num === 0) return <JustText text="Details" index={Math.random() * 500} />; // Detail -> Text
-    if(num === 1) return <AutoPreview setAttID={(seachedtitle) => {Fetching(`http://127.0.0.1:3000/api/projects?title${seachedtitle}`);}} />; // Title -> AutoPreview
+    if(num === 1) return <AutoPreview setAttID={(seachedtitle) => {console.log(seachedtitle); Fetching(`http://127.0.0.1:3000/api/${tabNumber == 2 ? "tickets" : "users/myTickets"}?subject=${seachedtitle}`); }} />; // Title -> AutoPreview
     if(num === 2) return <JustText text="Client" index={Math.random() * 500} />; // Client -> -> Text
     if(num === 3) return <JustText text="Admin" index={Math.random() * 500}/>; // Admin -> Text
-    if(num === 4) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Priority" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?priority`) } />;  // Priority -> sort
-    if(num === 5) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Stauts" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?Stauts`) }/>;  // Stauts  -> sort
+    if(num === 4) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Priority" seto={( _order) => Fetching(`http://127.0.0.1:3000/api/${tabNumber == 2 ? "tickets" : "users/myTickets"}?sort=${_order =='asc'? "" : "-"}priority`) } />;  // Priority -> sort
+    if(num === 5) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Status" seto={( _order) => Fetching(`http://127.0.0.1:3000/api/${tabNumber == 2 ? "tickets" : "users/myTickets"}?sort=${_order =='asc'? "" : "-"}status`) }/>;  // Status  -> sort
     if(num === 6) return <AutoCompleteChoseMe setAttID={(newtext) => { console.log(newtext); }} apiFeatchFrom="http://127.0.0.1:3000/api/projects?name=" />;  // Project -> AutoComplete
     if(num === 7) return <ListSelect val={selectVal}  setval={ (newva) => { setSelectVal(newva); Fetching(`http://127.0.0.1:3000/api/projects?title=${newva}`);} } options={ ["all" , "Network" , "System", "Service" , "Telecommunications"] } />; // Category -> list
-    if(num === 8) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Date" seto={() => Fetching(`http://127.0.0.1:3000/api/projects?Date`) }/>; // Date -> sort
+    if(num === 8) return <Sort orderBy={orderBy} setOrderBy={setOrderBy}  order={order} setOrder={setOrder}  title="Date" seto={( _order) => Fetching(`http://127.0.0.1:3000/api/${tabNumber == 2 ? "tickets" : "users/myTickets"}?sort=${_order =='asc'? "-" : ""}createdAt`) }/>; // Date -> sort
 
   }
 
@@ -505,7 +504,7 @@ export default function Showtickets({api , userType}) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((_row,index) => {
-              return( <Row key={index + page * rowsPerPage} row={_row} />)
+              return( <Row key={index + page * rowsPerPage + Math.random() * 4826787} row={_row} />)
             }
           )}
 
