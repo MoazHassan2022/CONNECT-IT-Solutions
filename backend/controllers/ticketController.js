@@ -48,7 +48,7 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
       },
     });
   }*/
-  req.query['status'] = 3;
+  if (!req.query['status']) req.query['status'] = 3;
   const features = new APIFeatures(Ticket.find(), req.query)
     .filter()
     .sort()
