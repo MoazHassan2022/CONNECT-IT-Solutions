@@ -1,8 +1,10 @@
-import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio, RadioGroup, Select, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio, RadioGroup, Select, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import { blue, red, yellow } from "@mui/material/colors";
 import axios from "axios";
 import * as React from "react";
+import { useCookies } from "react-cookie";
 import {MdSend} from "react-icons/md"
+import { useNavigate } from "react-router";
 import theme from "../../Utalites/Theme";
 
 const CreateTicket = () => {
@@ -25,53 +27,73 @@ const CreateTicket = () => {
 
   const [Imgs , setImgs] = React.useState([]);
   
-  const [ suggestedprojects, setsuggestedprojects ] =React.useState(["News"]) ;
+  const [ suggestedprojects, setsuggestedprojects ] =React.useState([]) ;
   
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
-  const [Category, setCategory] = React.useState('Server');
+  const [Category, setCategory] = React.useState('Service');
+  const history = useNavigate();
+
+  const [cookies, setCookie] = useCookies(['user']);
+
+  const [succesCreate, setsuccesCreate] = React.useState(false);
 
   
   const SubmitTicket = async (e) => {
+    e.preventDefault();
+    const auth = "Bearer " + cookies.token;
 
     if(NewProject == 1){
-      const response = await axios.post("/api/projects/create", {name:project});
-      setProjectID(response.data.ProjectID);
+      console.log(project);
+      const response = await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
+        authorization: auth, 
+      }}).then(res => {setProjectID(res.data.data.project._id);}).catch(err => console.log(err));
     };
     
     let formData = new FormData();
-    formData.append('project', project);
+    formData.append('project', ProjectID);
     formData.append('subject', Title);
     formData.append('priority', Priority);
     formData.append('description', Description);
     formData.append('category', Category);
-    formData.append('attachments', Imgs)
 
-    e.preventDefault()
-      try {
-        await axios.post("/api/tickets", formData, {
-          headers: {
-            "Authentication": "PPrr :"   // add token here
-          },
-        });
-      } catch (err) {
-        alert(err);
-      }
+
+    for (let i = 0; i < Imgs[0].target.files.length; i++) {
+      formData.append('attachments', Imgs[0].target.files.item(i));
+    }
+  
     
+    //console.log(Imgs , Imgs[0].target.files);
+    await axios.post("http://127.0.0.1:3000/api/tickets", formData,  
+    {headers:{
+      authorization: auth, 
+    }}).then(res => {
+      setsuccesCreate(true);
+      console.log(res)
+    }).catch(error => console.log(error));
+
+  }
+
+  const fetchProjects = async (text) => {
+    const auth = "Bearer " + cookies.token;
+     const res = await axios.get(`http://127.0.0.1:3000/api/projects?name=${text}`, {headers:{
+      authorization: auth, 
+    }});
+    return [res.data.results, res.data.data.projects];
   }
 
   const renderProjectPanel = (_new) => {
-    console.log(_new, _new == 1);
     if(_new == 1){
       return <TextField
               label="New Project"
               type="text"
               fullwidth
               required
-              onChange={(event, newValue) => {
-                setProject(newValue);
+              onChange={(e) => {
+                setProject(e.target.value);
+                console.log(e.target.value);
                 }}
               sx={{ width: 300, marginLeft:6 }}
               />
@@ -79,12 +101,25 @@ const CreateTicket = () => {
       return <Autocomplete
       disablePortal
       required
+      onChange={(event, newValue) => {
+        console.log(newValue);
+        setProjectID(newValue._id);
+        setProject(newValue.name);
+      }}
       options={suggestedprojects}
+      getOptionLabel={(option) => option.name}
       onInputChange={(event, newValue) => {
       // make request with each change
-      setProject(newValue);
-      setProjectID(5);
-      }}
+      setProjectID(-1);
+      fetchProjects(newValue).then((res) => {
+        if(res[0] > 0){
+          setsuggestedprojects(res[1]);
+        }else {
+          setsuggestedprojects([]);
+        }
+      });
+    }}
+        
       error={projecterror}
       sx={{ width: 300, marginLeft:6 }}
       renderInput={(params) => <TextField {...params} label="Old Project" />  }
@@ -191,7 +226,7 @@ const CreateTicket = () => {
                 </Typography>
                 <TextField
                 id="outlined-textarea"
-                label="Multiline Placeholder"
+                label="Description"
                 placeholder="Placeholder"
                 multiline
                 minRows={3}
@@ -206,8 +241,10 @@ const CreateTicket = () => {
 
             <Stack  direction="row" justifyContent="center" alignItems="flex-start" spacing={4}>
               <Button sx={{marginLeft:14}} variant="contained" component="label" onChange={UploadImgs} >
-                  Upload Imgs
-                  <input hidden accept="image/*" multiple type="file"  />
+                <Typography variant="contained">
+                    Upload Files/Images
+                  </Typography>
+                  <input hidden multiple type="file" />
               </Button>
               <Button variant="contained" endIcon={<MdSend />}  type="submit"  >
                 submit
@@ -220,7 +257,13 @@ const CreateTicket = () => {
 
           </Stack>
 
-          
+
+          <Snackbar sx={{ width:400, }} open={succesCreate} autoHideDuration={3000} onClose={() => setsuccesCreate(false) }>
+            <Alert onClose={() => setsuccesCreate(false)} severity="success" >
+                Your ticket was successfully created!
+            </Alert >
+        </Snackbar>
+
         </form>
   );
 
