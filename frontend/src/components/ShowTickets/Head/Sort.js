@@ -11,22 +11,23 @@ const Sort = ({orderBy, setOrderBy , order , setOrder , title , seto}) => {
         if(orderBy != title){
             return <RiArrowUpDownFill />;
         }else {
-            if(orderBy == 'asc') return <AiOutlineArrowDown />;
-            else return <AiOutlineArrowUp />;
+            if(order == 'asc') return <AiOutlineArrowUp />;
+            else return <AiOutlineArrowDown />;
         }
-
     }
 
     const HandleOrderClick = () => {
         if(orderBy != title) {
             setOrderBy(title);
             setOrder('asc');
-        }else if(order == 'asc') {
+            seto('asc');
+        }else if(order === 'asc') {
             setOrder('des');
+            seto('des');
         }else{
             setOrder('asc');
+            seto('asc');
         }
-        seto();
     }
 
 
