@@ -38,6 +38,7 @@ exports.getAllTickets = catchAsync(async (req, res, next) => {
     .selectFields()
     .paginate();
   const tickets = await features.query;
+  if (req.query.sort && req.query.sort === '-createdAt') tickets.reverse();
   /*tickets.forEach((el) =>
     el['comments'].sort((a, b) => a['createdAt'] < b['createdAt'])
   );*/
