@@ -1,6 +1,11 @@
 {
+  "scripts": {
+    "updateFront" : "git add . && git commit -m 'trying script' && git push origin frontend && git chekout backend && git pull && git checkout frontend && git merge backend"
+  },
   "dependencies": {
     "react-redux": "^8.0.2",
     "redux": "^4.2.0"
   }
+  
+  
 }
