@@ -197,7 +197,7 @@ function a11yProps(index) {
 
           { usertype == 2 && <>
               <TabPanel value={value} index={0}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status=1"}/>
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status=1"} tabNumber={2} />
               </TabPanel>
 
               <TabPanel value={value} index={1} >

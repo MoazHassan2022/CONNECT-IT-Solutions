@@ -44,16 +44,17 @@ const CreateTicket = () => {
   const SubmitTicket = async (e) => {
     e.preventDefault();
     const auth = "Bearer " + cookies.token;
-
+    var pro = ProjectID;
     if(NewProject == 1){
       console.log(project);
       await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
         authorization: auth, 
-      }}).then(res => {setProjectID(res.data.data.project._id);}).catch(err => console.log(err));
+      }}).then(res => {setProjectID(res.data.data.project._id); pro =res.data.data.project._id; }).catch(err => console.log(err));
     };
     
     let formData = new FormData();
-    formData.append('project', ProjectID);
+    console.log(pro);
+    formData.append('project', pro);
     formData.append('subject', Title);
     formData.append('priority', Priority);
     formData.append('description', Description);
@@ -66,6 +67,7 @@ const CreateTicket = () => {
       }
     }
 
+
     //console.log(Imgs , Imgs[0].target.files);
     await axios.post("http://127.0.0.1:3000/api/tickets", formData,  
     {headers:{
@@ -73,8 +75,8 @@ const CreateTicket = () => {
     }}).then(res => {
       console.log(res);
       setsuccesCreate(true);
-      //setTimeout(window.location.reload() , 5000 );
-    }).catch(error => console.log(error));
+      setTimeout(window.location.reload() , 5000 );
+    }).catch(error => console.log(error.response.data.message));
 
   }
 
