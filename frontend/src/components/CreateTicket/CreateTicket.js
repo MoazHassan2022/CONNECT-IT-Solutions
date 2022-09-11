@@ -3,6 +3,7 @@ import { blue, red, yellow } from "@mui/material/colors";
 import axios from "axios";
 import * as React from "react";
 import { useCookies } from "react-cookie";
+import { BsFillCloudUploadFill } from "react-icons/bs";
 import {MdSend} from "react-icons/md"
 import { useNavigate } from "react-router";
 import theme from "../../Utalites/Theme";
@@ -28,6 +29,7 @@ const CreateTicket = () => {
   const [Imgs , setImgs] = React.useState([]);
   
   const [ suggestedprojects, setsuggestedprojects ] =React.useState([]) ;
+  
   
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -138,7 +140,7 @@ const CreateTicket = () => {
 
 
   return (
-        <form sx={{ display: 'flex', flexWrap: 'wrap', width: 100}} onSubmit={SubmitTicket} >
+        <form sx={{ display: 'flex', flexWrap: 'wrap', width: 100 , bgcolor:"#000"}} onSubmit={SubmitTicket} >
           <Stack 
             sx={{ marginLeft:"28.5vh"}}
             direction="column"
@@ -162,7 +164,7 @@ const CreateTicket = () => {
               required
               error={TitleError}
               onChange={(e) => setTitle(e.target.value) }
-              sx={{ width: 1000, marginLeft:9,  }}
+              sx={{ width: 1000, marginLeft:9.5,  }}
               />
             </Stack>
 
@@ -190,7 +192,7 @@ const CreateTicket = () => {
 
               <Stack direction="column" justifyContent="center" alignItems="center">
 
-              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Typography  color="primary">Category</Typography>
               <Select
                 value={Category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -203,7 +205,7 @@ const CreateTicket = () => {
                   </Stack>
 
               <Stack direction="column" justifyContent="center" alignItems="center">
-                  <FormLabel id="demo-row-radio-buttons-group-label">Priority</FormLabel>
+                <Typography  color="primary">Priority</Typography>
                   <RadioGroup
                     required
                     defaultValue={1}
@@ -242,14 +244,14 @@ const CreateTicket = () => {
             </Stack>
 
             <Stack  direction="row" justifyContent="center" alignItems="flex-start" spacing={4}>
-              <Button sx={{marginLeft:14}} variant="contained" component="label" onChange={UploadImgs} >
-                <Typography variant="contained">
+              <Button color="secondary" sx={{marginLeft:14}} endIcon={< BsFillCloudUploadFill color="secondary" />} variant="contained" component="label" onChange={UploadImgs} >
+                <Typography variant="contained" >
                     Upload Files/Images
                   </Typography>
                   <input hidden multiple type="file" />
               </Button>
-              <Button variant="contained" endIcon={<MdSend />}  type="submit"  >
-                submit
+              <Button variant="contained" color="secondary" endIcon={<MdSend color="secondary" />}  type="submit"  >
+               submit
               </Button>
 
             </Stack>

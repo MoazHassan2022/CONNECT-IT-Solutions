@@ -3,6 +3,7 @@
 }
 
 body {
+  background-color: #edebe6;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -28,10 +29,10 @@ code {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #9C4A1A; 
+  background: #583E26; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #583E26; 
+  background: #000; 
 }

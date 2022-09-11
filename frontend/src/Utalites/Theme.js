@@ -4,7 +4,7 @@ const GreyColor = "#999";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#9C4A1A",
+      main: "#583E26",
     },
     secondary: {
       main: "#F7C815",
@@ -16,7 +16,7 @@ const theme = createTheme({
       main: "#A78B71",
     },
     fivth:{
-      main: "#583E26",
+      main: "#9C4A1A",
     }
   },
    
