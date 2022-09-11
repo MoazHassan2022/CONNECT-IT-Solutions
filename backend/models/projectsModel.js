@@ -8,11 +8,11 @@ const projectSchema = mongoose.Schema({
     trim: true, // Remove all the white space in the beginning or end of the field
     maxLength: [
       50,
-      'A ticket subject must have less than or equal to 150 characters',
+      'A ticket subject must have less than or equal to 50 characters',
     ],
     minLength: [
       4,
-      'A ticket subject must have more than or equal to 10 characters',
+      'A ticket subject must have more than or equal to 4 characters',
     ],
   },
 });

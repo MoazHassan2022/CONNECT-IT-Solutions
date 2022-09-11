@@ -68,6 +68,7 @@ const ticketSchema = mongoose.Schema({
     },
   },
   createdAt: String,
+  answeredAt: String,
 });
 ticketSchema.pre(/^find/, function (next) {
   this.populate({
