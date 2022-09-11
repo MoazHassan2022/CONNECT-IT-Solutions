@@ -1,7 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const ticketRouter = require('./routes/ticketRoutes');
-const dummyInfoRouter = require('./routes/dummyInfoRoutes');
 const projectRouter = require('./routes/projectRoutes');
 const userRouter = require('./routes/userRoutes');
 const AppError = require('./utils/appError');
@@ -91,7 +90,6 @@ app.use('/api', limiter); // limit only api requests
 app.use('/api/tickets', ticketRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/users', userRouter);
-app.use('/api/dummyInfo', dummyInfoRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
