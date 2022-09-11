@@ -4,14 +4,9 @@ import App from "./App";
 import theme from "./Utalites/Theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css"
-import { Provider } from "react-redux";
 import React from "react";
 import * as ReactDOMClient from 'react-dom/client';
 import { CookiesProvider } from "react-cookie";
-
-
-//import store from "./Store/Store";
-
 
 const root = ReactDOMClient.createRoot(document.getElementById("root"));
 root.render(
@@ -27,6 +22,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-
-
