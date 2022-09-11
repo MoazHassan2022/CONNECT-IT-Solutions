@@ -20,12 +20,12 @@ const ticketSchema = mongoose.Schema({
     required: [true, 'A ticket must have a description!'],
     trim: true, // Remove all the white space in the beginning or end of the field
     maxLength: [
-      400,
-      'A ticket description must have less than or equal to 150 characters',
+      2000,
+      'A ticket description must have less than or equal to 2000 characters',
     ],
     minLength: [
-      4,
-      'A ticket description must have more than or equal to 10 characters',
+      70,
+      'A ticket description must have more than or equal to 70 characters',
     ],
   },
   admin: {
@@ -68,6 +68,7 @@ const ticketSchema = mongoose.Schema({
     },
   },
   createdAt: String,
+  answeredAt: String,
 });
 ticketSchema.pre(/^find/, function (next) {
   this.populate({
