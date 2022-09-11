@@ -79,7 +79,9 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { isActive: false });
   res.status(204).json({
     status: 'success',
-    data: null,
+    data: {
+      message: 'Your account has been deleted successfully!',
+    },
   });
 });
 

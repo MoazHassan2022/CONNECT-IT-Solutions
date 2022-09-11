@@ -81,6 +81,9 @@ exports.getTicket = catchAsync(async (req, res, next) => {
 exports.updateTicket = catchAsync(async (req, res, next) => {
   if (req.body.comment) {
     let ticket = await Ticket.findById(req.params.id);
+    if (!ticket) {
+      return next(new AppError('Ticket not found!', 404));
+    }
     req.body.comment['name'] = req.user.name;
     req.body.comment['photo'] = req.user.photo;
     req.body.comment['createdAt'] = req.requestTime;
@@ -88,8 +91,10 @@ exports.updateTicket = catchAsync(async (req, res, next) => {
       req.body.comment.isAnswer &&
       req.user.isAdmin &&
       req.user._id.toString() === ticket.admin._id.toString()
-    )
+    ) {
       ticket['answer'] = req.body.comment.content;
+      ticket['answeredAt'] = req.requestTime;
+    }
     ticket['comments'].push(req.body.comment);
     await ticket.save();
     return res.status(200).json({
