@@ -8,11 +8,12 @@ import Box from '@mui/material/Box';
 import CreateTicket from "../../components/CreateTicket/CreateTicket";
 import ShowTickets from "../../components/ShowTickets/showTickets";
 import theme from "../../Utalites/Theme";
-import { Avatar, Button, Drawer } from "@mui/material";
+import { Avatar, Button, Drawer, Icon, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
-import { Stack } from "@mui/system";
+import { keyframes, Stack } from "@mui/system";
 import { Alert,  Snackbar } from "@mui/material";
+import {MdOutlineCancel , MdOutlineCheckCircle} from "react-icons/md"
 
 
 
@@ -132,7 +133,7 @@ function a11yProps(index) {
   else{ return(
   <Stack direction="column">
   <Button aria-label="upload picture" component="label" onClick={(e) => { seimgnew(e); setWantUpdate(true);} }>
-    <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
+    <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh',  }} >
       <Avatar  
       src={img}
       alt={cookies.name} 
@@ -146,21 +147,99 @@ function a11yProps(index) {
 }
   }
 
+  const DeleteMe = async () => {
+    const auth = "Bearer " + cookies.token;
+
+    await axios.delete("http://127.0.0.1:3000/api/users/deleteMe",{headers:{
+      authorization: auth, 
+    }}).then(res => {});
+     
+
+    logout();
+  }
+
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+
   return (
       <Box
-        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: '105vh' }}
+        sx={{ flexGrow: 1, display: 'flex', height: '105vh', }}
       >
-        <Stack direction="column"></Stack>
         <Drawer        
-      
         variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "27.9vh", bgcolor: theme.palette.primary.main },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "27.94vh", bgcolor: theme.palette.primary.main },
           }}
           open
           >
-          {userPhoto()}
+
+
+
+
+
+
+    <Button  component="label" onClick={(e) => { setAnchorEl(e.currentTarget); } }>
+      <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', }} >
+        <Avatar  
+        src={img}
+        alt={cookies.name} 
+          sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
+          />
+      </Box>
+    </Button>
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={Boolean(anchorEl)}
+      onClose={() => { setAnchorEl(null); }}
+        >
+          <MenuItem component="label" onClick={(e) => {setAnchorEl(null);  seimgnew(e); setWantUpdate(true);}}>
+              Update Image
+              <input hidden accept="image/*" multiple type="file" />
+          </MenuItem>
+          <MenuItem onClick={logout}>Logout</MenuItem>
+          <MenuItem onClick={DeleteMe}>Delete Account</MenuItem>
+
+      </Menu>
+
+      {
+        wantUpdate && 
+        <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={2} >
+          <Button sx={{ bgcolor: theme.palette.secondary.main,}} endIcon={<MdOutlineCheckCircle color={theme.palette.primary.main} />} variant="contained"  onClick={UpdateImg}>
+            <Typography variant="contained" color={theme.palette.primary.main} >
+            Update
+            </Typography>
+          </Button>
+          <Button sx={{ bgcolor: theme.palette.secondary.main, }} endIcon={<MdOutlineCancel color={theme.palette.primary.main} />}  variant="contained" onClick={() => setWantUpdate(false) } >
+            <Typography variant="contained" color={theme.palette.primary.main} >
+              Cancel
+            </Typography>
+          </Button>
+        </Stack>
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
           <Tabs
             orientation="vertical"
             variant="scrollable"
@@ -173,24 +252,16 @@ function a11yProps(index) {
             }}
           >
 
-
           {tabs.map(((t, index) =>{
               return (
                   <Tab key={index} label={t} {...a11yProps(tabs.indexOf(t))} />
               );
           })) }
 
-          <Box  sx={{ alignSelf: 'center', marginTop: '8vh' }} >
-          <Typography variant="h2" color={theme.palette.secondary.main} >
-            Safacotech
-          </Typography>
+          <Box  sx={{ alignSelf: 'center', marginTop: '8vh', }} >
+            <Avatar variant="rounded"  sx={{ width: 160, height: 55, transform:"scale(1.2)" }} src="/Assets/CONNECT.svg" alt="CO" />
           </Box>
 
-          <Box  sx={{ alignSelf: 'center', marginTop: '8vh' }} >
-            <Button sx={{ bgcolor: "#fff"}} onClick={logout}>
-               logout
-            </Button>
-          </Box>
         </Tabs>
         </Drawer>
 
@@ -212,7 +283,7 @@ function a11yProps(index) {
           }
 
           { usertype == 1 && <>
-              <TabPanel value={value} index={0}>
+              <TabPanel value={value} index={0} >
               <CreateTicket /> 
               </TabPanel>
 

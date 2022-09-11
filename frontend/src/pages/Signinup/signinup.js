@@ -3,7 +3,7 @@ import { AiFillGithub , AiFillInstagram , AiFillTwitterCircle , AiFillLinkedin }
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router"
 import "./signinup.css";
-import { Alert, Avatar, Box, Button, IconButton, Snackbar, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, Icon, IconButton, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import {  useCookies } from "react-cookie";
 import theme from "../../Utalites/Theme";
@@ -16,7 +16,6 @@ import {IoPersonCircle} from "react-icons/io5"
     const [signin, setsignin] = useState(false);
     const [errorlogin, seterrorlogin] = useState(false);
     const [errorSignup, seterrorSignup] = useState(false);
-
     const [Name , setName] = useState("")
     const [Email , setEmail] = useState("")
     const [Password , setPassword] = useState("");
@@ -99,29 +98,20 @@ import {IoPersonCircle} from "react-icons/io5"
   
 
     return (
-        <div className="loader-container">
-            <div className={singcalssname} id="container">
-            <div className="form-container sign-up-container">
+        <Box className="loader-container">
+            <Box className={singcalssname} id="container">
+            <Box className="form-container sign-up-container">
                 <form action="#" onSubmit={handlesignup}>
                     <Typography variant="h1">safacotech</Typography>
-                    <Typography variant="h2">Create Account</Typography>
-
-                    <Stack   justifyContent="center"
-                    alignItems="center"
-                    direction="column" spacing={1} sx={{ width: "120%", }} >
-
+                    <Typography variant="h2">Create Accountss</Typography>
+                    <Stack justifyContent="center" alignItems="center" direction="column" spacing={1} sx={{ width: "120%", }} >
                             <Stack direction="row" spacing={4} sx={{marginTop: 5}}>
                             <TextField 
                             variant="filled"
                             required
-                                    sx={{
-                                        width: { md: 150 },
-                                        "& .MuiInputBase-root": {
-                                            height: 60
-                                        }
-                                    }}
-                                label="Name"
-                                onChange={(e)=>  setName(e.target.value)}
+                            label="Name"
+                            size="small"
+                            onChange={(e)=>  setName(e.target.value)}
                             />
 
                             <TextField 
@@ -140,7 +130,7 @@ import {IoPersonCircle} from "react-icons/io5"
                                 
                             </Stack>
 
-                        <TextField variant="filled" fullWidth required type="email" label="email"  onChange={ (e) => setEmail(e.target.value)} />
+                        <TextField className="" variant="filled" fullWidth required type="email" label="email"  onChange={ (e) => setEmail(e.target.value)} />
                         <TextField variant="filled" fullWidth required type="password" label="password"  onChange={ (e) => setPassword(e.target.value)} />
                         <TextField variant="filled" fullWidth required type="password" label="confirm password" onChange={ (e) => setPasswordConfirmation(e.target.value)} />
                         <Stack direction="row" >
@@ -156,7 +146,7 @@ import {IoPersonCircle} from "react-icons/io5"
 
                     </Stack>
                 </form>
-            </div>
+            </Box>
             <div className="form-container sign-in-container">
                 <form action="#" onSubmit={handlesignin} >
                     <h2>safacotech</h2>
@@ -182,7 +172,7 @@ import {IoPersonCircle} from "react-icons/io5"
                     </div>
                 </div>
             </div>
-        </div>
+        </Box>
 
     <div className="footer">
     <b>	Follow us on social media </b>
@@ -206,7 +196,7 @@ import {IoPersonCircle} from "react-icons/io5"
         </Snackbar>
 
  
-    </div>
+    </Box>
     )
 }
 

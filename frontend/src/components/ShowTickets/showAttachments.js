@@ -10,7 +10,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import {AiFillFileText} from "react-icons/ai"
-import { Link } from '@mui/material';
+import { IconButton, Link } from '@mui/material';
 import { Stack } from '@mui/system';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -43,7 +43,7 @@ function ShowAttachments(props) {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box sx={{ width: 300, height:280, flexGrow: 1, marginTop:0  }}>
       <Paper
         square
         elevation={0}
@@ -56,9 +56,10 @@ function ShowAttachments(props) {
         }}
       >
       </Paper>
-        <Box sx={{ height: 255, maxWidth: 700, p: 2 }}>
+        <Box sx={{ maxHeight: 255, maxWidth: 700, p: 0 }}>
             {isImage(exten(attachments[activeStep])) ?  
-        <div>
+        <Box sx={{ padding : 0}}>
+          <Link href={`http://127.0.0.1:3000/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}}>
               <Box
                 component="img"
                 sx={{
@@ -67,28 +68,40 @@ function ShowAttachments(props) {
                   maxWidth: 500,
                   overflow: 'hidden',
                   width: '100%',
+                  padding:"0 0 0 0",
                 }}
                 src={`http://127.0.0.1:3000/files/tickets/${attachments[activeStep]}`}
                 alt={attachments[activeStep]}
               />
-        </div>
+          </Link>
+        </Box>
         :
         <Box sx={{ bgcolor: theme.palette.primary.main  , height: 255,
             display: 'block',
             maxWidth: 500,
             overflow: 'hidden',
             width: '100%',
-            
             }}>
-                <Stack direction="column"
-                  justifyContent="flex-end"
-                  alignItems="center"
-                  spacing={2}
-                  sx={{ marginTop: 6}}
-
+                <Stack 
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+                  sx={{ marginTop: 8}}
                  >
-                    <AiFillFileText color={theme.palette.secondary.main} size={40} sx={{cursor: 'pointer'}} />
-                    <Link href={`http://127.0.0.1:3000/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main}}>Attachment #{activeStep+1}.{exten(attachments[activeStep])}</Link>
+                  <Link href={`http://127.0.0.1:3000/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}} >
+                    <Stack 
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                    >
+                    <AiFillFileText color={theme.palette.secondary.main} size={50} sx={{cursor: 'pointer'}} />
+                    Attachment #{activeStep+1}.{exten(attachments[activeStep])}
+                  </Stack>
+
+                  </Link>
+
                 </Stack>
         </Box>
         }
@@ -105,20 +118,12 @@ function ShowAttachments(props) {
             disabled={activeStep === maxSteps - 1}
           >
             Next
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowLeft />
-            ) : (
               <KeyboardArrowRight />
-            )}
           </Button>
         }
         backButton={
           <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowRight />
-            ) : (
               <KeyboardArrowLeft />
-            )}
             Back
           </Button>
         }
