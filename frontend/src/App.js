@@ -8,8 +8,6 @@ import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 
 
 function App() {
-
-
   return (
       <Routes>
         <Route path="/" element={ <CustomerMainPage /> } />
