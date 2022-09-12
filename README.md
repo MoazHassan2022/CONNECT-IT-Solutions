@@ -1,8 +1,19 @@
-# CONECT IT-Solutions
+# CONNECT IT-Solutions
 
 ![alt text](./Images/CONNECT.png)
 
-<h3>Built With : </h3>
+<h2>Table of Contents</h2>
+<ul>
+  <li><a href="#BuiltWith">Built With</a></li>
+  <li><a href="#GettingStarted">Getting Started</a></li>
+  <li><a href="#Description">Description</a></li>
+  <li><a href="#Documentation">Documentation</a></li>
+  <li><a href="#CommitHistory">Commit History</a></li>
+  <li><a href="#Screenshots">Screenshots</a></li>
+  <li><a href="#Contributors">Contributors</a></li>
+</ul>
+
+<h2 href="#BuiltWith">Built With : </h2>
  <ul>
   <li><a href="https://www.w3schools.com/nodejs/">Node js</a></li>
   <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
@@ -13,7 +24,7 @@
   <li><a href="https://mui.com/material-ui/getting-started/templates/">Material UI</a></li>
  </ul>
 
-<h3>Getting Started</h3>
+<h2 href="#GettingStarted">Getting Started</h2>
 <blockquote>
   <p>This is a list of needed instructions to set up your project locally, to get a local copy up and running follow these instructuins.
  </p>
@@ -43,7 +54,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
  </li>
  </ol>
 
-<h3>Description</h3>
+<h2 href="#Description">Description</h2>
 <blockquote>
   <p>
   This website was implemented for an internship program at <a href="https://safecotech.com/">Safecotech Company</a>.
@@ -67,7 +78,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
  </p>
 </blockquote>
 
-<h3>Documentation</h3>
+<h2 href="#Documentation">Documentation</h2>
 <blockquote>
   <p>
   You can see a documentation video for the website at Youtube <a href="https://www.youtube.com/watch?v=G2PCJBHN9Ik">Video Documentation</a>
