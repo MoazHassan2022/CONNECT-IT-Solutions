@@ -16,17 +16,17 @@
 <h2 href="#BuiltWith">Built With : </h2>
  <ul>
   <li><a href="https://www.w3schools.com/nodejs/">Node js</a></li>
-  <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
+  <li><a href="https://www.javatpoint.com/expressjs-tutorial">Express js</a></li>
   <li><a href="https://www.w3schools.in/mongodb/tutorials/">MongoDB</a></li>
   <li><a href="http://www.w3schools.me/aspnetcore/implement-jwt">JSON Web Token</a></li>
-  <li><a href="https://www.javatpoint.com/expressjs-tutorial">Express js</a></li>
+  <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
   <li><a href="https://redux.js.org/">Redux</a></li>
   <li><a href="https://mui.com/material-ui/getting-started/templates/">Material UI</a></li>
  </ul>
 
 <h2 href="#GettingStarted">Getting Started</h2>
 <blockquote>
-  <p>This is a list of needed instructions to set up your project locally, to get a local copy up and running follow these instructuins.
+  <p>This is a list of needed instructions to set up your project locally, to get a local copy up and running follow these instructions.
  </p>
 </blockquote>
 <ol>
@@ -91,7 +91,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
 </blockquote>
 <blockquote>
   <p>
-  For further details, you can look on this pdf file <a href="https://">PDF Documentaion</a>
+  You can look on the documentation as a pdf file at <a href="https://drive.google.com/file/d/1e03AvYyPktNC_d5mElBinzBgyIrMj5SQ/view?usp=sharing">PDF Documentaion</a>
   </p>
 </blockquote>
 
@@ -125,19 +125,19 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   <img src="./Images/Update image, Log out or Delete account.png">
 </li>
 <li>
-  <h4>Logged in with an admin account and opened "pending tickets" and opened a ticket with attachments.</h4>
+  <h4>Logged in with an admin account, opened "pending tickets", and opened a ticket with attachments.</h4>
   <img src="./Images/Pending tickets for admins.png">
 </li>
 <li>
-  <h4>Opened another pending ticket(If any attachment extenstion is not for an image like ".pdf" the user can click on it to open a new tab and see or download the attachment).</h4>
+  <h4>Opened another pending ticket(If any attachment extension is not for an image like ".pdf" the user can click on it to open a new tab and see or download the attachment).</h4>
   <img src="./Images/Another pending ticket.png">
 </li>
 <li>
-  <h4>Admin assigned the ticket to him by clicking on the fingerprint.</h4>
+  <h4>Admin assigned the ticket to him by clicking on the fingerprint icon.</h4>
   <img src="./Images/Assiging the ticket to the admin by clicking on the fingerprint.png">
 </li>
 <li>
-  <h4>Ticket is moved to "manage your tickets" for the admin and status became "being solved"</h4>
+  <h4>Ticket is moved to "manage your tickets" for the admin and status became "being solved".</h4>
   <img src="./Images/Ticket is moved to manage your tickets for the admin and status became being solved.png">
 </li>
 <li>
@@ -157,7 +157,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   <img src="./Images/Client is satisfied with this answer and clicked on Close Ticket Icon.png">
 </li>
 <li>
-  <h4>Ticket status became solved, final answer is shown and the ticket will be moved to solved tickets to be seen by other users.</h4>
+  <h4>Ticket status became solved, final answer is shown, and the ticket will be moved to "solved tickets" to be seen by other users.</h4>
   <img src="./Images/Ticket status became solved, final answer is shown and the ticket will be moved to solved tickets to be seen by other users.png">
 </li>
 <li>
@@ -165,7 +165,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   <img src="./Images/Another client looking on solved tickets and the recently solved ticket is there.png">
 </li>
 <li>
-  <h4>Filter Tickets(Filter could be applied any where: "manage your tickets", "solved tickets" and "pending tickets").</h4>
+  <h4>Filter Tickets(Filters could be applied at any where: "manage your tickets", "solved tickets" and "pending tickets").</h4>
   <img src="./Images/Filter Tickets.png">
 </li>
 <li>
@@ -173,7 +173,7 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   <img src="./Images/Sort on priority, status, and Created at date.png">
 </li>
 <li>
-  <h4>Choose the project, category and/or title to search with.png</h4>
+  <h4>Choose the project, category and/or title to search with.</h4>
   <img src="./Images/Choose the project, category and title to search with.png">
 </li>
 <li>
