@@ -28,11 +28,13 @@ function PaperComponent(props) {
 
 
 
-export const Filter =({open , handleClose  , fetch , baseapi }) =>{
+export const Filter =({open , handleClose  , fetch , baseapi , tabnumber }) =>{
     const theme = useTheme();
 
     const [sorton , setSorton] = useState("Priority");
-    const sortSelections = ["Priority" , "Status" , "Created at"];
+    var sortSelections;
+    if(tabnumber == 1) sortSelections = ["Priority" , "Status" , "Created at"];
+    else sortSelections = ["Priority" , "Created at"];
 
     const [sortselect , setSortSelect] = useState(
   {
@@ -192,9 +194,9 @@ export const Filter =({open , handleClose  , fetch , baseapi }) =>{
 const handleresult = (ty) => {
   const p = choseSelect;
     switch (ty) {
-        case "Project" : return  p[ty]["id"] != -1 ? `your Tickets should be in Project : ${p[ty]["name"]} with Project id: ${p[ty]["id"]}` : ""; break;
+        case "Project" : return  p[ty]["id"] != -1 ? `Project : ${p[ty]["name"]} ` : ""; break;
         case "Category" : return  `Category : ${p[ty]}`; break;
-        case "Title includes" : return (Title != "" && titleSubtitle == true) ? `your Tickets should includes ${Title}` : ""; break;
+        case "Title includes" : return (Title != "" && titleSubtitle == true) ? `Title includes : ${Title}` : ""; break;
     }
 }
 
@@ -221,19 +223,30 @@ const ResetAtt = () => {
 
   const FilterRequest = (e) => {
     e.preventDefault();
-    
     let api = baseapi;
     let sort = "?sort=";
-    sortSelections.map(ky => { if(sortselect[ky] != 0) { 
-      sort += (sortselect[ky] == 1 ? "" : "-") + ky + ",";
-    }});
 
+    if(tabnumber == 1) sortSelections = ["Priority" , "Status" , "Created at"];
+
+    sortSelections.map(ky => { if(sortselect[ky] != 0) { 
+      sort += (sortselect[ky] == 1 ? "" : "-");
+      switch(ky){
+        case "Priority": sort += "priority,"; break;
+        case "Status": sort += "status,"; break;
+        case "Created at": sort += "createdAt,"; break;
+      }
+
+
+    }});
     if(sort.length > 6){
       sort = sort.slice(0, -1) + '&';
       api += sort;
     }
-
     let chose = "";
+    if(tabnumber == 0) chose += "status=1&";
+    if(tabnumber == 2) chose += "status=3&";
+
+
     let p = choseSelect;
     ChoseSelections.map(ky => {
       switch (ky) {
@@ -242,13 +255,12 @@ const ResetAtt = () => {
         case "Title includes" : {if(p[ky] != "") { chose += `subject=${p[ky]}&`} } break;
       }
     });
-
     if(chose.length > 0){
       if(sort.length < 8) api += '?';
       chose = chose.slice(0, -1);
-      
       api += chose;
     }
+
     console.log(api);
   
     fetch(api);

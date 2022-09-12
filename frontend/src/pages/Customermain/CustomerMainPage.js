@@ -112,42 +112,7 @@ function a11yProps(index) {
   
 
 
-  const userPhoto = () => {
-    if(wantUpdate) {return (
-    <Stack direction="column">
-    <Button aria-label="upload picture" component="label" onClick={(e) => { seimgnew(e); setWantUpdate(true);} }>
-      <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh', /*borderRadius: "50%", boxShadow: "#F7C815 0px 0px 20px;",*/ }} >
-        <Avatar  
-        src={img}
-        alt={cookies.name} 
-          sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
-          />
-      </Box>
-      <input hidden accept="image/*" multiple type="file" />
-    </Button>
-     <Button sx={{ bgcolor: theme.palette.secondary.main}} variant="contained" component="label" onClick={UpdateImg}>
-              Update
-    </Button>
-  </Stack>)
-  }
-  else{ return(
-  <Stack direction="column">
-  <Button aria-label="upload picture" component="label" onClick={(e) => { seimgnew(e); setWantUpdate(true);} }>
-    <Box  sx={{ alignSelf: 'center', marginTop: '2vh', marginBottom: '2vh',  }} >
-      <Avatar  
-      src={img}
-      alt={cookies.name} 
-        sx={{ width: 120, height: 120, bgcolor: theme.palette.secondary.main ,fontSize:50 , }}
-        />
-    </Box>
-    <input hidden accept="image/*" multiple type="file" />
-  </Button>
-</Stack>
-)
-}
-  }
-
-  const DeleteMe = async () => {
+   const DeleteMe = async () => {
     const auth = "Bearer " + cookies.token;
 
     await axios.delete("http://127.0.0.1:3000/api/users/deleteMe",{headers:{
@@ -256,7 +221,7 @@ function a11yProps(index) {
 
           { usertype == 2 && <>
               <TabPanel value={value} index={0}>
-              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status=1"} tabNumber={2} />
+              <ShowTickets api={"http://127.0.0.1:3000/api/tickets?status=1"} tabNumber={0} />
               </TabPanel>
 
               <TabPanel value={value} index={1} >

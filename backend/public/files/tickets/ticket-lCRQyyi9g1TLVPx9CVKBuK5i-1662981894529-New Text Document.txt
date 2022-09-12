@@ -1,0 +1,26 @@
+ <Button variant="contained" component="label" onClick={(e) => setImg(e)} >
+        Upload
+        <input hidden accept="image/*" multiple type="file" />
+      </Button>
+
+<Button variant="contained" component="label" onClick={UpdateImg}>
+          update
+</Button>
+
+
+
+<TableCell align='left' key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >
+              <Search>
+                <SearchIconWrapper>
+                  <FaSearch />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder={head}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+            </Search>
+
+</TableCell>
+
+
+            <TableCell align='left' key={index} sx={{color: theme.palette.secondary.main , fontWeight: 700}} >{head}</TableCell>

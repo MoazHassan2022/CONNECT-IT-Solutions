@@ -9,6 +9,7 @@ import {  useCookies } from "react-cookie";
 import theme from "../../Utalites/Theme";
 import {IoPersonCircle} from "react-icons/io5"
 import { BiLogIn , BiBuildings } from "react-icons/bi" 
+import { FaRegArrowAltCircleUp } from "react-icons/fa";
 
 
  export const Signinup = () => {
@@ -28,6 +29,7 @@ import { BiLogIn , BiBuildings } from "react-icons/bi"
 
     const UploadImg = (e) => {
         if (e) setPhoto(e);
+
       }
     
 
@@ -105,7 +107,7 @@ import { BiLogIn , BiBuildings } from "react-icons/bi"
                 <Box  sx={{ alignSelf: 'center' }} >
                         <Avatar variant="rounded"  sx={{ width: 160, height: 55, transform:"scale(1.2)" }} src="/Assets/CONNECT.svg" alt="CO" />
                 </Box>
-                    <Typography variant="h1" color={theme.palette.primary.main}>Create Accountss</Typography>
+                    <Typography variant="h1" color={theme.palette.primary.main}>Create Account</Typography>
                     <Stack justifyContent="flex-start" alignItems="center" direction="column" spacing={1} sx={{ width: "120%", marginTop:2}} >
                             <Stack direction="row" spacing={3}  alignItems="center" sx={{marginBottom:0}}>
                             <input style={{ borderRadius:4 }} required placeholder="Name" size="small" onChange={(e)=>  setName(e.target.value)}/>
@@ -121,7 +123,7 @@ import { BiLogIn , BiBuildings } from "react-icons/bi"
                         <input hidden accept="image/*" type="file" />
                         </Button>
 
-                        <Button sx={{ borderRadius:2 , width: 140}} endIcon={<BiBuildings size={14}/>} variant="contained" color="secondary" type="submit">Sign Up</Button>
+                        <Button sx={{ borderRadius:2 , width: 140}} endIcon={<FaRegArrowAltCircleUp size={14}/>} variant="contained" color="secondary" type="submit">Sign Up</Button>
                         </Stack>
 
                     </Stack>
