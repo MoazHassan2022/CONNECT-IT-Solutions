@@ -27,7 +27,6 @@ function ShowAttachments(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const attachments = props.attachments;
   const maxSteps = attachments.length;
-    console.log(theme);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => {console.log(prevActiveStep);  return prevActiveStep + 1;   });

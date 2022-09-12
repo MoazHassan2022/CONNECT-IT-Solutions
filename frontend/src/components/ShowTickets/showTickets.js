@@ -238,7 +238,6 @@ function Row({roww , snackbarShowMessage}) {
 
   }
 
-
   return (
     <React.Fragment>
       <TableRow key={1} sx={{ '& > *': { borderBottom: '20px' } , marginTop: "-5px" }} >
@@ -251,7 +250,7 @@ function Row({roww , snackbarShowMessage}) {
             {open ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
           </IconButton>
         </TableCell>
-        <TableCell width={150} sx={{maxWidth: 50, overflow:"hidden"}}>{row.Title}</TableCell>
+        <TableCell width={150} sx={{maxWidth: 200, overflow:"hidden"}}>{row.Title}</TableCell>
         <TableCell width={150} >{row.clinetName}</TableCell>
         <TableCell width={150}>{row.adminID != "-1" ? row.adminName : "NOt YET"}</TableCell>
         <TableCell width={10} >{renderPeriority(row.Priority)}</TableCell>
@@ -280,22 +279,24 @@ function Row({roww , snackbarShowMessage}) {
                   <Stack width="70%" direction="column" spacing={5}>
                     <Stack direction="row">
                       <Stack direction="column" >
-                      <Typography variant="h3" sx={{display: "block", color: theme.palette.primary.main , paddingright:10}}> Description </Typography>
-                        <Typography variant="body1" width="100%">
-                        {row.Description}
-                        </Typography>
-                      </Stack>
-                      {usertype == 2  && row.status == 1 && 
+                        <Stack direction="row">
+                        <Typography variant="h3" sx={{display: "block", color: theme.palette.primary.main , paddingright:10}}> Description </Typography>
+                        {usertype == 2  && row.status == 1 && 
                               <IconButton aria-label="fingerprint" title="Assign TO my" color="primary" onClick={AssignTicket} >
                               <MdOutlineFingerprint />
                               </IconButton>
                       }
+                        </Stack>
+                        <Typography variant="body1" width="100%">
+                        {row.Description}
+                        </Typography>
+                      </Stack>
                     </Stack>
 
                     {row.status === 3 && row.Answer != undefined &&
                         <ListItem alignItems="flex-start" sx={{marginRight:500}} >
                           <ListItemAvatar>
-                            <Avatar alt={row.adminName} src={row.adminPhoto} />
+                            <Avatar alt={row.adminName} src={`http://127.0.0.1:3000/img/users/${row.adminPhoto}`} />
                           </ListItemAvatar>
                           <ListItemText
                             primary={
@@ -380,7 +381,7 @@ function Row({roww , snackbarShowMessage}) {
               </Box>
               {row.status !== 3 && <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar src={`http://127.0.0.1:3000/img/users/${row.clientPhoto}`} alt="Name" sx={{marginLeft:1.1}} />
+              <Avatar size="large" src={`http://127.0.0.1:3000/img/users/${cookies.photo}`} alt="Name" sx={{marginLeft:1.1, marginRight:1.2 , width:50 , height:50 }} />
             </ListItemAvatar>
             <ListItemText
               secondary={
@@ -530,7 +531,6 @@ export function Showtickets({api , tabNumber, snackbarShowMessage}) {
     setOpenFilter(false);
   };
 
-
   return (
     <TableContainer component={Paper} sx={{marginTop:"-10px" , marginLeft:"28.5vh" , width:"166vh" }}>
       <Table  aria-label="custom pagination table">
@@ -540,7 +540,7 @@ export function Showtickets({api , tabNumber, snackbarShowMessage}) {
               <IconButton onClick={handleClickOpen}>
                   <FaFilter color={theme.palette.secondary.main} />
               </IconButton>
-              <Filter open={openFilter} handleClose={handleClose} fetch={Fetching} baseapi={`http://127.0.0.1:3000/api/${tabNumber == 2 ? "tickets" : "users/myTickets"}`} />
+              <Filter open={openFilter} handleClose={handleClose} fetch={Fetching} tabnumber={tabNumber} baseapi={`http://127.0.0.1:3000/api/${tabNumber != 1 ? "tickets" : "users/myTickets"}`} />
         </TableCell>
           {heads.map((head, index) => {
               return (
