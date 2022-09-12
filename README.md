@@ -11,7 +11,7 @@
 
 <h3>Getting Started</h3>
 <blockquote>
-  <p>This is an list of needed instructions to set up your project locally, to get a local copy up and running follow these instructuins.
+  <p>This is a list of needed instructions to set up your project locally, to get a local copy up and running follow these instructuins.
  </p>
 </blockquote>
 <ol>
@@ -19,14 +19,14 @@
   <h4>Clone the repository.</h4>
  </li>
  <li>
-  <h4>cd into backend folder and create a file called "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=dev <br>
+  <h4>cd into backend folder and create a file named "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=dev <br>
 PORT=[PORT YOU WANT] <br>
 DATABASE=[CONNECTION STRING OF YOUR DATABASE] <br>
 USER=[DATABASE USER NAME] <br>
 DATABASE_PASSWORD=[YOUR DATABASE PASSWORD] <br>
 JWT_SECRET=[YOUR JWT SECRET STRING] <br>
-JWT_EXPIRES_IN=[DATE EX: 1d "for one day"] <br>
-JWT_COOKIE_EXPIRES_IN=[Date EX: 1 "for one day"] <br></p> </blockquote>
+JWT_EXPIRES_IN=[DATE example: 1d "for one day"] <br>
+JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
  </li>
  <li>
   <h4>Follow this article to install node js and npm <a href="https://phoenixnap.com/kb/install-node-js-npm-on-windows">Install Node js and npm</a></h4>.
@@ -46,9 +46,9 @@ JWT_COOKIE_EXPIRES_IN=[Date EX: 1 "for one day"] <br></p> </blockquote>
   <br>
   It is a website for submitting and solving tickets in the IT industry.
   <br>
-  The client could be a company or a person and he is able to submit a ticket to be viewed by website admins and then answered, look on solved tickets before to see if he can find a problem similar to his one or mange his own currently being answered tickets.
+  The client could be a company or a person and he is able to submit a ticket to be viewed by website admins and then answered, look on solved tickets before to see if he can find a problem similar to his one or manage his own currently being answered tickets.
   <br>
-  The admins can see pending tickets that are not assigned to any admin yet, mange their own current tickets that the admin is discussing with client about it or see the solved tickets to see a problem that might be similar to the problem he is currently solving.
+  The admins can see pending tickets that are not assigned to any admin yet, manage their own current tickets that the admin is discussing with client about it or see the solved tickets to look for a problem that might be similar to the problem he is currently solving.
   <br>
   Each user has information like name, email, company name, password and maybe a photo. He can update his photo at any time, sign up new account, log in, log out and delete his account.
   <br> 
@@ -56,7 +56,7 @@ JWT_COOKIE_EXPIRES_IN=[Date EX: 1 "for one day"] <br></p> </blockquote>
   <br> 
   If any admin wants to answer a ticket, he can assign it to him and discuss with the client and send him answers.
   <br>
-  If the client finds that his problem is solved, he can close it and the problem will be in solved tickets and has its answer.
+  If the client finds that his problem is solved, he can close it and the problem will be moved to the solved tickets and has its answer.
   <br>
   This website is developed in React js for the frontend and in Node js for the backend using MongoDB for the database.
 
@@ -66,7 +66,7 @@ JWT_COOKIE_EXPIRES_IN=[Date EX: 1 "for one day"] <br></p> </blockquote>
 <h3>Documentation</h3>
 <blockquote>
   <p>
-  You can see a documentation video for the website at <a href="https://www.youtube.com/watch?v=G2PCJBHN9Ik">Documentation</a>
+  You can see a documentation video for the website at Youtube <a href="https://www.youtube.com/watch?v=G2PCJBHN9Ik">Video Documentation</a>
   </p>
 </blockquote>
 <blockquote>
