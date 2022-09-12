@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material/styles";
-// const SilverColor = "#bdbdbd";
 const GreyColor = "#999";
 const theme = createTheme({
   palette: {

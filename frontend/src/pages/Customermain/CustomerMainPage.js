@@ -228,18 +228,6 @@ function a11yProps(index) {
         </Stack>
       }
 
-
-
-
-
-
-
-
-
-
-
-
-
           <Tabs
             orientation="vertical"
             variant="scrollable"

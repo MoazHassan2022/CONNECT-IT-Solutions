@@ -21,7 +21,7 @@ import Typography from '@mui/material/Typography';
 import {MdKeyboardArrowDown,  MdKeyboardArrowUp} from 'react-icons/md';
 import {BsFillArrowRightCircleFill , BsFillCheckCircleFill} from 'react-icons/bs';
 import axios from 'axios';
-import { Avatar, Button, InputBase, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
+import { Alert, Avatar, Button, InputBase, ListItem, ListItemAvatar, ListItemText, Snackbar, TextField } from '@mui/material';
 import { Stack } from '@mui/system';
 import { MdAssignmentInd , MdPendingActions, MdVerifiedUser , MdOutlineFingerprint} from "react-icons/md";
 import { SiVerizon } from "react-icons/si";
@@ -39,6 +39,7 @@ import Sort from './Head/Sort';
 import ListSelect from './Head/ListSelect';
 import AutoPreview from './Head/AutoPreview';
 import Filter from './Filter';
+import withSnackbar from '../SnackBar/SnackBar';
 
 
 function TablePaginationActions(props) {
@@ -109,16 +110,17 @@ function createData(TicketID, Title, Description, Priority, status, Projectname 
 
 
 
-function Row(props) {
-  const theme = useTheme();
+function Row({roww , snackbarShowMessage}) {
+  const theme = useTheme(); 
 
   const [cookies] = useCookies(['user']);
   const usertype = cookies.userType;
-  const [ row, setRow ] = React.useState(props.row);
+  const [ row, setRow ] = React.useState(roww);
 
   
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [snakeData, setSnakeData] = React.useState([false,"",""]);
 
 
 
@@ -134,7 +136,10 @@ function Row(props) {
           authorization: auth, 
         }}).then(res => {
           setRow( prepareRow(res.data.data.ticket) );
-        }).catch(err => console.log(err));
+          setSnakeData([true, "Comment is successfully created!" , "success"]);
+        }).catch(err => 
+          setSnakeData([true, err.response.data.message , "error"])
+          );
         setValue("");
     }
   };
@@ -173,8 +178,10 @@ function Row(props) {
     await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`,
       {admin: "admin"}, {headers:{
       authorization: auth, 
-    }}).then(res => { setRow( prepareRow(res.data.data.ticket)); console.log(res); } ).catch(err => console.log(err));
-
+    }}).then(res => { 
+      setRow( prepareRow(res.data.data.ticket));
+       setSnakeData([true, "Ticket is assigned to you" , "info"])
+      } ).catch(err => setSnakeData([true, err.response.data.message , "error"])  );
   }
 
 
@@ -184,7 +191,10 @@ function Row(props) {
       status: 3,
     }, {headers:{
       authorization: auth, 
-    }}).then( res => { setRow( prepareRow(res.data.data.ticket)); console.log(res.data.data.ticket); }  ).catch(err => console.log(err));
+    }}).then( res => { 
+      setRow( prepareRow(res.data.data.ticket));
+      setSnakeData([true, "Ticket is closed successfully!" , "success"])
+       }  ).catch(err => setSnakeData([true, err.response.data.message , "error"]) );
   }
 
 
@@ -202,11 +212,12 @@ function Row(props) {
           authorization: auth, 
         }}).then(res => {
           setRow( prepareRow(res.data.data.ticket) );
-          console.log(res.data.data.ticket);
-        }).catch(err => console.log(err));
+          setSnakeData([true, "Asnwer is submitted successfully!" , "success"]);
+        }).catch(err => setSnakeData([true, err.response.data.message , "error"]) );
         setValue("");
     }
   };
+
 
 
 
@@ -369,7 +380,7 @@ function Row(props) {
               </Box>
               {row.status !== 3 && <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar alt="Name" sx={{marginLeft:1.1}} />
+              <Avatar src={`http://127.0.0.1:3000/img/users/${row.clientPhoto}`} alt="Name" sx={{marginLeft:1.1}} />
             </ListItemAvatar>
             <ListItemText
               secondary={
@@ -415,6 +426,11 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+      <Snackbar sx={{ width:400, }} open={snakeData[0]} autoHideDuration={3000} onClose={() => setSnakeData([false , "" , ""]) }>
+            <Alert onClose={() => setSnakeData([false , "" , ""])} severity={snakeData[2]} >
+                {snakeData[1]}
+            </Alert >
+        </Snackbar>
     </React.Fragment>
   );
 }
@@ -456,7 +472,7 @@ const prepareRow = (tic) =>{
 const heads = [ "Title" , "Client", "Admin","Priority", "Status", "Project" ,"Category" ,"Date" ];
 
 
-export default function Showtickets({api , tabNumber}) {
+export function Showtickets({api , tabNumber, snackbarShowMessage}) {
   const history = useNavigate();
   const theme = useTheme();
 
@@ -540,7 +556,7 @@ export default function Showtickets({api , tabNumber}) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((_row,index) => {
-              return( <Row key={index + page * rowsPerPage + Math.random() * 4826787} row={_row} />)
+              return( <Row key={index + page * rowsPerPage + Math.random() * 4826787} roww={_row} snackbarShowMessage={snackbarShowMessage} />)
             }
           )}
 
@@ -575,3 +591,4 @@ export default function Showtickets({api , tabNumber}) {
     </TableContainer>
   );
 }
+export default Showtickets;

@@ -13,7 +13,6 @@ import {AiFillFileText} from "react-icons/ai"
 import { IconButton, Link } from '@mui/material';
 import { Stack } from '@mui/system';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const exten =  (filename) => {
     return filename.substring(filename.lastIndexOf('.')+1, filename.length);

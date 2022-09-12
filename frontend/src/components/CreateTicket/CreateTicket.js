@@ -40,8 +40,8 @@ const CreateTicket = () => {
 
   const [cookies, setCookie] = useCookies(['user']);
 
-  const [succesCreate, setsuccesCreate] = React.useState(false);
-
+  const [snakeData, setSnakeData] = React.useState([false,"",""]);
+  // state , message , servity
   
   const SubmitTicket = async (e) => {
     e.preventDefault();
@@ -51,7 +51,10 @@ const CreateTicket = () => {
       console.log(project);
       await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
         authorization: auth, 
-      }}).then(res => {setProjectID(res.data.data.project._id); pro =res.data.data.project._id; }).catch(err => console.log(err));
+      }}).then(res => {setProjectID(res.data.data.project._id); pro = res.data.data.project._id; 
+        setSnakeData([true, "Project is successfully created" , "success"]);
+      })
+      .catch(err => setSnakeData([true, err.response.data.message , "error"]));
     };
     
     let formData = new FormData();
@@ -76,9 +79,9 @@ const CreateTicket = () => {
       authorization: auth, 
     }}).then(res => {
       console.log(res);
-      setsuccesCreate(true);
+      setSnakeData([true, "Ticket is successfully created" , "success"]);
       setTimeout(window.location.reload() , 5000 );
-    }).catch(error => console.log(error.response.data.message));
+    }).catch(error => setSnakeData([true, error.response.data.message , "error"]) );
 
   }
 
@@ -255,16 +258,11 @@ const CreateTicket = () => {
               </Button>
 
             </Stack>
-
-
-
-
           </Stack>
 
-
-          <Snackbar sx={{ width:400, }} open={succesCreate} autoHideDuration={3000} onClose={() => setsuccesCreate(false) }>
-            <Alert onClose={() => setsuccesCreate(false)} severity="success" >
-                Your ticket was successfully created!
+        <Snackbar sx={{ width:400, }} open={snakeData[0]} autoHideDuration={3000} onClose={() => setSnakeData([false , "" , ""]) }>
+            <Alert onClose={() => setSnakeData([false , "" , ""])} severity={snakeData[2]} >
+                {snakeData[1]}
             </Alert >
         </Snackbar>
 
