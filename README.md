@@ -4,11 +4,11 @@
 
 <h2>Table of Contents</h2>
 <ul>
-  <li><a href="#BuiltWith">Built With</a></li>
-  <li><a href="#GettingStarted">Getting Started</a></li>
+  <li><a href="#Built-With">Built With</a></li>
+  <li><a href="#Getting-Started">Getting Started</a></li>
   <li><a href="#Description">Description</a></li>
   <li><a href="#Documentation">Documentation</a></li>
-  <li><a href="#CommitHistory">Commit History</a></li>
+  <li><a href="#commit-history">Commit History</a></li>
   <li><a href="#Screenshots">Screenshots</a></li>
   <li><a href="#Contributors">Contributors</a></li>
 </ul>
