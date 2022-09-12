@@ -2,11 +2,15 @@
 
 ![alt text](./Images/CONNECT.png)
 
-<h3>Build With : </h3>
+<h3>Built With : </h3>
  <ul>
   <li><a href="https://www.w3schools.com/nodejs/">Node js</a></li>
   <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
   <li><a href="https://www.w3schools.in/mongodb/tutorials/">MongoDB</a></li>
+  <li><a href="http://www.w3schools.me/aspnetcore/implement-jwt">JSON Web Token</a></li>
+  <li><a href="https://www.javatpoint.com/expressjs-tutorial">Express js</a></li>
+  <li><a href="https://redux.js.org/">Redux</a></li>
+  <li><a href="https://mui.com/material-ui/getting-started/templates/">Material UI</a></li>
  </ul>
 
 <h3>Getting Started</h3>
@@ -79,6 +83,9 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   For further details, you can look on this pdf file <a href="https://">PDF Documentaion</a>
   </p>
 </blockquote>
+
+<h2 href="#CommitHistory">Commit History</h2>
+<img src="./Images/CommitHistory.png">
 
 <h2 href="#Screenshots">Screenshots</h2>
 <ol>
@@ -175,3 +182,29 @@ JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
   <img src="./Images/User's photo is updated.png">
 </li>
 </ol>
+
+<h2 href="#Contributors">Contributors</h2>
+<h3>Frontend</h3>
+<table> 
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/70758177?v=4" alt="Yousef Khaled" width="150px">
+        <br>
+        <a href="https://github.com/Waer1">Yousef Khaled</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h3>Backend</h3>
+<table> 
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/87096647?v=4" alt="Moaz Mohammed" width="150px">
+        <br>
+        <a href="https://github.com/MoazHassan2022">Moaz Mohammed</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
