@@ -1,0 +1,44 @@
+{
+  "name": "iteasolutions",
+  "version": "1.0.0",
+  "description": "IT solutions website Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "start:prod": "set NODE_ENV=prod&&nodemon server.js",
+    "debug": "ndb server.js",
+    "serve": "nodemon server.js"
+  },
+  "author": "Moaz Mohamed",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.5.2",
+    "helmet": "^6.0.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.7.8",
+    "sharp": "^0.31.0",
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
+    "prettier": "^2.7.1"
+  }
+}

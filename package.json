@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "updateFront": "git add . && git commit -m 'trying script' && git push origin frontend && git checkout backend && git pull && git checkout frontend && git merge backend",
+    "showGitDetails":"git log --oneline --decorate --graph --all" 
+  },
+  "dependencies": {
+    "react-redux": "^8.0.2",
+    "react-swipeable-views": "^0.14.0",
+    "redux": "^4.2.0"
+  }
+}
