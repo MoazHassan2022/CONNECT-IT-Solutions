@@ -1,0 +1,26 @@
+@keyframes background { 
+    0% {
+      background-position: 0% 20%;
+    }
+    
+    50% {
+      background-position: 70% 10%;
+    }
+    
+    100% {
+      background-position: 0% 10%;
+    }
+  }
+  
+.loader-container {
+    background: linear-gradient(315deg, rgba(247,200,21,1) 0%, rgba(88,62,38,1) 56%);
+    background-size: 200% 200%;  
+    height: 102.6vh;
+    width: 100%;
+    animation: background 6s ease infinite;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: -20px 0 0px;
+}
