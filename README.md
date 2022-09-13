@@ -41,7 +41,7 @@ USER=[DATABASE USER NAME] <br>
 DATABASE_PASSWORD=[YOUR DATABASE PASSWORD] <br>
 JWT_SECRET=[YOUR JWT SECRET STRING] <br>
 JWT_EXPIRES_IN=[DATE example: 1d "for one day"] <br>
-JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
+JWT_COOKIE_EXPIRES_IN=[DATE example: 1 "for one day"] <br></p> </blockquote>
  </li>
  <li>
   <h4>Follow this article to install node js and npm <a href="https://phoenixnap.com/kb/install-node-js-npm-on-windows">Install Node js and npm</a></h4>.
