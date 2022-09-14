@@ -53,7 +53,7 @@ app.use(
 );
 
 // Development logging
-if (process.env.NODE_ENV === 'dev') app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 // Body parser, reading date from body into req.body
 app.use(express.json({ limit: '10kb' }));
