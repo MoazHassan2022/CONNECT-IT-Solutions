@@ -34,7 +34,7 @@
   <h4>Clone the repository.</h4>
  </li>
  <li>
-  <h4>cd into backend folder and create a file named "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=dev <br>
+  <h4>cd into backend folder and create a file named "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=development <br>
 PORT=[PORT YOU WANT] <br>
 DATABASE=[CONNECTION STRING OF YOUR DATABASE] <br>
 USER=[DATABASE USER NAME] <br>
