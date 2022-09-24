@@ -17,43 +17,24 @@ const app = express();
 // MIDDLEWARES
 
 app.use(cors());
-
-app.use(function (req, res, next) {
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    'http://localhost:3001',
-    'http://localhost:5000'
-  );
-
-  // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
-
-  // Request headers you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
-  );
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
+app.options('*', cors());
 
 // Set security HTTP headers
 app.use(
   helmet({
+    crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ['*'],
+        scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
+      },
+    },
   })
 );
 
 // Development logging
-if (process.env.NODE_ENV === 'dev') app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 // Body parser, reading date from body into req.body
 app.use(express.json({ limit: '10kb' }));
