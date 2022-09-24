@@ -49,7 +49,7 @@ const CreateTicket = () => {
     var pro = ProjectID;
     if(NewProject == 1){
       console.log(project);
-      await axios.post("http://127.0.0.1:3000/api/projects", {name:project},  {headers:{
+      await axios.post("/api/projects", {name:project},  {headers:{
         authorization: auth, 
       }}).then(res => {setProjectID(res.data.data.project._id); pro = res.data.data.project._id; 
         setSnakeData([true, "Project is successfully created" , "success"]);
@@ -58,7 +58,6 @@ const CreateTicket = () => {
     };
     
     let formData = new FormData();
-    console.log(pro);
     formData.append('project', pro);
     formData.append('subject', Title);
     formData.append('priority', Priority);
@@ -74,7 +73,7 @@ const CreateTicket = () => {
 
 
     //console.log(Imgs , Imgs[0].target.files);
-    await axios.post("http://127.0.0.1:3000/api/tickets", formData,  
+    await axios.post("/api/tickets", formData,  
     {headers:{
       authorization: auth, 
     }}).then(res => {
@@ -87,8 +86,8 @@ const CreateTicket = () => {
 
   const fetchProjects = async (text) => {
     const auth = "Bearer " + cookies.token;
-     const res = await axios.get(`http://127.0.0.1:3000/api/projects?name=${text}`, {headers:{
-      authorization: auth, 
+     const res = await axios.get(`/api/projects?name=${text}`, {headers:{
+      authorization: auth,
     }});  
     return [res.data.results, res.data.data.projects];
   }

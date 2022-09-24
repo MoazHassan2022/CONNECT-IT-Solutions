@@ -21,25 +21,14 @@ import Typography from '@mui/material/Typography';
 import {MdKeyboardArrowDown,  MdKeyboardArrowUp} from 'react-icons/md';
 import {BsFillArrowRightCircleFill , BsFillCheckCircleFill} from 'react-icons/bs';
 import axios from 'axios';
-import { Alert, Avatar, Button, InputBase, ListItem, ListItemAvatar, ListItemText, Snackbar, TextField } from '@mui/material';
-import { Stack } from '@mui/system';
-import { MdAssignmentInd , MdPendingActions, MdVerifiedUser , MdOutlineFingerprint} from "react-icons/md";
-import { SiVerizon } from "react-icons/si";
+import { Alert, Avatar, Button, ListItem, ListItemAvatar, ListItemText, Snackbar, TextField  , Stack } from '@mui/material';
+import { MdAssignmentInd , MdPendingActions , MdOutlineFingerprint} from "react-icons/md";
 import {FcHighPriority , FcMediumPriority , FcLowPriority} from "react-icons/fc";
-import { blue, brown, green, purple } from '@mui/material/colors';
 import { useNavigate } from 'react-router';
 import { useCookies } from 'react-cookie';
 import ShowAttachments from './showAttachments';
-import {FaFilter, FaSearch} from "react-icons/fa"
-import styled from '@emotion/styled';
-import { alpha } from '@mui/material/styles';
-import JustText from './Head/JustText';
-import AutoCompleteChoseMe from './Head/AutoCompleteChoseMe';
-import Sort from './Head/Sort';
-import ListSelect from './Head/ListSelect';
-import AutoPreview from './Head/AutoPreview';
+import {FaFilter} from "react-icons/fa"
 import Filter from './Filter';
-import withSnackbar from '../SnackBar/SnackBar';
 
 
 function TablePaginationActions(props) {
@@ -132,7 +121,7 @@ function Row({roww , snackbarShowMessage}) {
           "comment": {"content": value},
         };
         const auth = "Bearer " + cookies.token;
-        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`, dataToSend, {headers:{
+        await axios.patch(`/api/tickets/${row.TicketID}`, dataToSend, {headers:{
           authorization: auth, 
         }}).then(res => {
           setRow( prepareRow(res.data.data.ticket) );
@@ -175,7 +164,7 @@ function Row({roww , snackbarShowMessage}) {
 
   const AssignTicket = async () => {
     const auth = "Bearer " + cookies.token;
-    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`,
+    await axios.patch(`/api/tickets/${row.TicketID}`,
       {admin: "admin"}, {headers:{
       authorization: auth, 
     }}).then(res => { 
@@ -187,7 +176,7 @@ function Row({roww , snackbarShowMessage}) {
 
   const CloseTicket = async () => {
     const auth = "Bearer " + cookies.token;
-    await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}` , { 
+    await axios.patch(`/api/tickets/${row.TicketID}` , { 
       status: 3,
     }, {headers:{
       authorization: auth, 
@@ -208,7 +197,7 @@ function Row({roww , snackbarShowMessage}) {
         },
         };
         const auth = "Bearer " + cookies.token;
-        await axios.patch(`http://127.0.0.1:3000/api/tickets/${row.TicketID}`, dataToSend, {headers:{
+        await axios.patch(`/api/tickets/${row.TicketID}`, dataToSend, {headers:{
           authorization: auth, 
         }}).then(res => {
           setRow( prepareRow(res.data.data.ticket) );
@@ -296,7 +285,7 @@ function Row({roww , snackbarShowMessage}) {
                     {row.status === 3 && row.Answer != undefined &&
                         <ListItem alignItems="flex-start" sx={{marginRight:500}} >
                           <ListItemAvatar>
-                            <Avatar alt={row.adminName} src={`http://127.0.0.1:3000/img/users/${row.adminPhoto}`} />
+                            <Avatar alt={row.adminName} src={`/img/users/${row.adminPhoto}`} />
                           </ListItemAvatar>
                           <ListItemText
                             primary={
@@ -348,7 +337,7 @@ function Row({roww , snackbarShowMessage}) {
               <Box sx={{ margin: 1 }}>
               {row.Comments.map((comment, index) => { 
                 let name = comment.name;
-                let photo = `http://127.0.0.1:3000/img/users/${comment.photo}`;
+                let photo = `/public/img/users/${comment.photo}`;
                 let Date = row.Date;
                 let content = comment.content;
                 return (
@@ -381,7 +370,7 @@ function Row({roww , snackbarShowMessage}) {
               </Box>
               {row.status !== 3 && <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar size="large" src={`http://127.0.0.1:3000/img/users/${cookies.photo}`} alt="Name" sx={{marginLeft:1.1, marginRight:1.2 , width:50 , height:50 }} />
+              <Avatar size="large" src={`/img/users/${cookies.photo}`} alt="Name" sx={{marginLeft:1.1, marginRight:1.2 , width:50 , height:50 }} />
             </ListItemAvatar>
             <ListItemText
               secondary={
@@ -516,11 +505,6 @@ export function Showtickets({api , tabNumber, snackbarShowMessage}) {
 
   React.useEffect(() => { Fetching(api); }, []);
 
-  const [orderBy, setOrderBy] = React.useState('Date');
-  const [order, setOrder] = React.useState('asc');
-  const [selectVal , setSelectVal] = React.useState('all');
-
-
   const [openFilter , setOpenFilter] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -540,7 +524,7 @@ export function Showtickets({api , tabNumber, snackbarShowMessage}) {
               <IconButton onClick={handleClickOpen}>
                   <FaFilter color={theme.palette.secondary.main} />
               </IconButton>
-              <Filter open={openFilter} handleClose={handleClose} fetch={Fetching} tabnumber={tabNumber} baseapi={`http://127.0.0.1:3000/api/${tabNumber != 1 ? "tickets" : "users/myTickets"}`} />
+              <Filter open={openFilter} handleClose={handleClose} fetch={Fetching} tabnumber={tabNumber} baseapi={`/api/${tabNumber != 1 ? "tickets" : "users/myTickets"}`} />
         </TableCell>
           {heads.map((head, index) => {
               return (
