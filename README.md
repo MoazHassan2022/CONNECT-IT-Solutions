@@ -4,6 +4,7 @@
 
 <h2>Table of Contents</h2>
 <ul>
+  <li><a href="#deployed-website--">Deployed Website</a></li>
   <li><a href="#built-with--">Built With</a></li>
   <li><a href="#getting-started">Getting Started</a></li>
   <li><a href="#Description">Description</a></li>
@@ -13,12 +14,21 @@
   <li><a href="#Contributors">Contributors</a></li>
 </ul>
 
+<h2 href="#DeployedWebsite">Deployed Website : </h2>
+<blockquote>
+  <p>NOTE: Heroku is planning to prevent free servers soon, so maybe when you see this, the website will not be there anymore.
+ </p>
+</blockquote>
+ <ul>
+  <li><a href="https://connect-it-solutions.herokuapp.com/">You can see the deployed website on Heroku here
+  </a></li>
+ </ul>
+
 <h2 href="#BuiltWith">Built With : </h2>
  <ul>
   <li><a href="https://www.w3schools.com/nodejs/">Node js</a></li>
   <li><a href="https://www.javatpoint.com/expressjs-tutorial">Express js</a></li>
   <li><a href="https://www.w3schools.in/mongodb/tutorials/">MongoDB</a></li>
-  <li><a href="https://mongoosejs.com/">Mongoose js</a></li>
   <li><a href="http://www.w3schools.me/aspnetcore/implement-jwt">JSON Web Token</a></li>
   <li><a href="https://www.w3schools.com/REACT/DEFAULT.ASP">React js</a></li>
   <li><a href="https://redux.js.org/">Redux</a></li>
@@ -35,14 +45,14 @@
   <h4>Clone the repository.</h4>
  </li>
  <li>
-  <h4>cd into backend folder and create a file named "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=development <br>
+  <h4>cd into backend folder and create a file named "config.env" and fill it with this fields with your information. <h4>  <br> <blockquote> <p> NODE_ENV=dev <br>
 PORT=[PORT YOU WANT] <br>
 DATABASE=[CONNECTION STRING OF YOUR DATABASE] <br>
 USER=[DATABASE USER NAME] <br>
 DATABASE_PASSWORD=[YOUR DATABASE PASSWORD] <br>
 JWT_SECRET=[YOUR JWT SECRET STRING] <br>
 JWT_EXPIRES_IN=[DATE example: 1d "for one day"] <br>
-JWT_COOKIE_EXPIRES_IN=[DATE example: 1 "for one day"] <br></p> </blockquote>
+JWT_COOKIE_EXPIRES_IN=[Date example: 1 "for one day"] <br></p> </blockquote>
  </li>
  <li>
   <h4>Follow this article to install node js and npm <a href="https://phoenixnap.com/kb/install-node-js-npm-on-windows">Install Node js and npm</a></h4>.
