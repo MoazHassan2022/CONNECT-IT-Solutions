@@ -16,7 +16,8 @@
 
 <h2 href="#DeployedWebsite">Deployed Website : </h2>
 <blockquote>
-  <p>NOTE: Heroku is planning to prevent free servers soon, so maybe when you see this, the website will not be there anymore.
+  <p>
+  NOTE: Heroku is planning to prevent free servers soon, so maybe when you see this, the website will not be there anymore.
  </p>
 </blockquote>
  <ul>
