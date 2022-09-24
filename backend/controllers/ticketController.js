@@ -11,7 +11,6 @@ const multerStorage = multer.diskStorage({
     cb(null, 'public/files/tickets');
   },
   filename: async (req, file, cb) => {
-    console.log(file);
     if (file.mimetype.startsWith('image')) {
       return cb(null, `ticket-${makeRandomString()}-${Date.now()}.jpg`);
     }

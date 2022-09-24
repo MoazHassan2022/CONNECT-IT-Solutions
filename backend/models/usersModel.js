@@ -118,7 +118,6 @@ userSchema.methods.createPasswordResetToken = async function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  console.log({ resetToken }, { passwordResetToken: this.passwordResetToken });
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes with millis
   return resetToken;
 };
