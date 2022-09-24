@@ -20,7 +20,7 @@ const createAndSendToken = (user, statusCode, res) => {
     ),
     httpOnly: true,
   };
-  if (process.env.NODE_ENV === 'prod') cookieOptions.secure = true;
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
   res.cookie('jwt', token, cookieOptions);
   // Remove password from output
   user.password = undefined;
@@ -34,6 +34,7 @@ const createAndSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  if (req.body.isAdmin) delete req.body.isAdmin;
   if (req.file) req.body.photo = req.file.filename;
   const newUser = await User.create(req.body);
   const token = signToken(newUser._id);

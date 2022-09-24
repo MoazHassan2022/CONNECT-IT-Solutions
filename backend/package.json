@@ -4,10 +4,10 @@
   "description": "IT solutions website Project",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "start:prod": "set NODE_ENV=prod&&nodemon server.js",
-    "debug": "ndb server.js",
-    "serve": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "start:prod": "set NODE_ENV=production&&nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "Moaz Mohamed",
   "license": "ISC",
@@ -40,5 +40,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "prettier": "^2.7.1"
+  },
+  "engines": {
+    "node": "^16"
   }
 }
