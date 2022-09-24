@@ -8,7 +8,7 @@ import axios from "axios";
 import {  useCookies } from "react-cookie";
 import theme from "../../Utalites/Theme";
 import {IoPersonCircle} from "react-icons/io5"
-import { BiLogIn , BiBuildings } from "react-icons/bi" 
+import { BiLogIn  } from "react-icons/bi" 
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
 
 
@@ -54,7 +54,7 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
             "email" : Email,
             "password" : Password,
         };
-        axios.post("http://127.0.0.1:3000/api/users/login", user)
+        axios.post("/api/users/login", user)
         .then(res => { 
             setCookie('token', res.data.token, { path: '/' });
             setCookie('email', res.data.data.user.email, { path: '/' });
@@ -83,7 +83,7 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
         formData.append('companyName', CompanyName);
         formData.append('photo', Photo.target.files[0]);
 
-        axios.post("http://127.0.0.1:3000/api/users/signup", formData)
+        axios.post("/api/users/signup", formData)
         .then(res => { 
             setCookie('token', res.data.token, { path: '/' });
             setCookie('email', res.data.data.user.email, { path: '/' });
@@ -160,10 +160,10 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
     <div className="footer">
     <b>	Follow us on social media </b>
         <div className="icons">
-            <a href="https://github.com/Waer1" target="_blank" className="social"><AiFillGithub size={30} color="#fff"/></a>
+            <a href="#" target="_blank" className="social"><AiFillGithub size={30} color="#fff"/></a>
             <a href="#" target="_blank" className="social"><AiFillInstagram  size={30} color="#fff"/></a>
             <a href="#" target="_blank" className="social"><AiFillTwitterCircle  size={30} color="#fff"/></a>
-            <a href="https://www.linkedin.com/in/yousef-elwaer-13304220a/" target="_blank" className="social"><AiFillLinkedin  size={30} color="#fff" /> </a>
+            <a href="#" target="_blank" className="social"><AiFillLinkedin  size={30} color="#fff" /> </a>
             </div>
         </div>
         
