@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-const catchAsync = require('./catchAsync');
+const nodemailer = require("nodemailer");
+const catchAsync = require("./catchAsync");
 
 const sendEmail = catchAsync(async (options) => {
   // Create a transporter
@@ -14,7 +14,7 @@ const sendEmail = catchAsync(async (options) => {
 
   // define email options
   const emailOptions = {
-    from: 'Admin 1 <admin1@omAhmed2.com>',
+    from: "Admin 1 <admin1@gmail.com>",
     to: options.email,
     subject: options.subject,
     text: options.message,
