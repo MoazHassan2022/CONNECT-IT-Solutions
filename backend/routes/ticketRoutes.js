@@ -1,10 +1,10 @@
-const express = require('express');
-const ticketController = require('../controllers/ticketController');
-const authController = require('./../controllers/authController');
+const express = require("express");
+const ticketController = require("../controllers/ticketController");
+const authController = require("./../controllers/authController");
 const router = express.Router();
 
 router
-  .route('/')
+  .route("/")
   .get(authController.protect, ticketController.getAllTickets)
   .post(
     authController.protect,
@@ -13,7 +13,7 @@ router
   );
 
 router
-  .route('/:id')
+  .route("/:id")
   .get(authController.protect, ticketController.getTicket)
   .patch(authController.protect, ticketController.updateTicket);
 

@@ -1,11 +1,11 @@
-const APIFeatures = require('../utils/apiFeatures');
-const AppError = require('./../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
-const User = require('./../models/usersModel');
-const Ticket = require('./../models/ticketsModel');
-const makeRandomString = require('./../utils/randomString');
-const multer = require('multer');
-const sharp = require('sharp');
+const APIFeatures = require("../utils/apiFeatures");
+const AppError = require("./../utils/appError");
+const catchAsync = require("./../utils/catchAsync");
+const User = require("./../models/usersModel");
+const Ticket = require("./../models/ticketsModel");
+const makeRandomString = require("./../utils/randomString");
+const multer = require("multer");
+const sharp = require("sharp");
 
 /*const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -20,10 +20,10 @@ const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
   console.log(file);
-  if (file.mimetype.startsWith('image')) {
+  if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError('Not an image! Please upload only images.', 400), false);
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
   }
 };
 
@@ -32,14 +32,14 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 
-exports.uploadUserPhoto = upload.single('photo');
+exports.uploadUserPhoto = upload.single("photo");
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
   req.file.filename = `user-${makeRandomString()}-${Date.now()}.jpg`;
   await sharp(req.file.buffer)
     .resize(500, 500)
-    .toFormat('jpg')
+    .toFormat("jpg")
     .toFile(`public/img/users/${req.file.filename}`);
   next();
 });
@@ -57,18 +57,18 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
     return next(
       new AppError(
-        'This route is not for updating the password, Please use this route /updateMyPassword',
+        "This route is not for updating the password, Please use this route /updateMyPassword",
         400
       )
     );
-  const filteredBody = filterObj(req.body, 'name', 'email', 'companyName');
+  const filteredBody = filterObj(req.body, "name", "email", "companyName");
   if (req.file) filteredBody.photo = req.file.filename;
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true, // return the updated user
     runValidators: true,
   });
   res.status(200).json({
-    status: 'success',
+    status: "success",
     results: 1,
     requiredAt: req.requestTime,
     data: {
@@ -77,12 +77,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteMe = catchAsync(async (req, res, next) => {
+exports.deleteMe = catchAsync(async (req, res) => {
   await User.findByIdAndUpdate(req.user.id, { isActive: false });
   res.status(204).json({
-    status: 'success',
+    status: "success",
     data: {
-      message: 'Your account has been deleted successfully!',
+      message: "Your account has been deleted successfully!",
     },
   });
 });
@@ -90,7 +90,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 exports.getAllUsers = catchAsync(async (req, res) => {
   const users = await User.find();
   res.status(200).json({
-    status: 'success',
+    status: "success",
     results: users.length,
     requiredAt: req.requestTime,
     requestAt: req.requestTime,
@@ -104,7 +104,7 @@ exports.getMyTickets = catchAsync(async (req, res) => {
     $or: [{ admin: req.user.id }, { client: req.user.id }],
   };
   if (req.query.subject) {
-    options.subject = { $regex: req.query.subject, $options: 'i' };
+    options.subject = { $regex: req.query.subject, $options: "i" };
     delete req.query.subject;
   }
   const features = new APIFeatures(Ticket.find(options), req.query)
@@ -113,9 +113,9 @@ exports.getMyTickets = catchAsync(async (req, res) => {
     .selectFields()
     .paginate();
   const tickets = await features.query;
-  if (req.query.sort && req.query.sort === '-createdAt') tickets.reverse();
+  if (req.query.sort && req.query.sort === "-createdAt") tickets.reverse();
   res.status(200).json({
-    status: 'success',
+    status: "success",
     results: tickets.length,
     requiredAt: req.requestTime,
     data: {

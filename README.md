@@ -4,6 +4,7 @@
 
 <h2>Table of Contents</h2>
 <ul>
+  <li><a href="#deployed-website--">Deployed Website</a></li>
   <li><a href="#built-with--">Built With</a></li>
   <li><a href="#getting-started">Getting Started</a></li>
   <li><a href="#Description">Description</a></li>
@@ -12,6 +13,17 @@
   <li><a href="#Screenshots">Screenshots</a></li>
   <li><a href="#Contributors">Contributors</a></li>
 </ul>
+
+<h2 href="#DeployedWebsite">Deployed Website : </h2>
+<blockquote>
+  <p>
+  NOTE: Heroku is planning to prevent free servers soon, so maybe when you see this, the website will not be there anymore.
+ </p>
+</blockquote>
+ <ul>
+  <li><a href="https://connect-it-solutions.herokuapp.com/">You can see the deployed website on Heroku here
+  </a></li>
+ </ul>
 
 <h2 href="#BuiltWith">Built With : </h2>
  <ul>
