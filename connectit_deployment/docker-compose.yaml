@@ -1,0 +1,81 @@
+version: "3"
+services:
+  web_server:
+    image: nginx
+    ports:
+      - 81:80
+      - 444:443
+    networks:
+      - Connect
+    restart: always
+    depends_on:
+      - frontend
+      - backend
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../storage/certbot/www/:/var/www/certbot/:ro
+      - ../storage/certbot/conf/:/etc/nginx/ssl/:ro
+
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ../storage/certbot/conf/:/etc/letsencrypt/
+  #     - ../storage/certbot/www/:/var/www/certbot/
+  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email elwaeryousef@gmail.com -d sites.connectit.org --agree-tos
+  #   depends_on:
+  #     - frontend
+  #     - backend
+
+
+  mongodb:
+    container_name: connectit_mongodb
+    image: mongo
+    command: mongod --auth
+    restart: unless-stopped
+    env_file: ./envfiles/DB.env
+    ports:
+    - 27017:27017
+    networks:
+      - private
+    volumes:
+      - ../storage/database:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    
+  backend:
+    build: ../backend
+    restart: unless-stopped
+    env_file: ./envfiles/backend.env
+    # command: npm run runSeeds
+    networks:
+      - frontend_net
+      - private
+      - flutter_net
+      - Connect
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    volumes:
+      - ../storage/media:/usr/src/app/public
+    # deploy:
+    #   mode: replicated
+    #   replicas: 1
+
+  frontend:
+    build: ../frontend
+    env_file: ./envfiles/frontend.env
+    networks:
+      - frontend_net
+      - Connect
+    depends_on:
+      - backend
+    restart: always
+    # deploy:
+    #   mode: replicated
+    #   replicas: 4
+
+networks:
+  private:
+  frontend_net:
+  flutter_net:
+  Connect:
