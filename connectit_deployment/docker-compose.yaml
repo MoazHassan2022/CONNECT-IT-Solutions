@@ -2,10 +2,8 @@ version: "3"
 services:
   web_server:
     image: nginx
-    ports:
-      - 81:80
-      - 444:443
     networks:
+      - global
       - Connect
     restart: always
     depends_on:
@@ -21,7 +19,7 @@ services:
   #   volumes:
   #     - ../storage/certbot/conf/:/etc/letsencrypt/
   #     - ../storage/certbot/www/:/var/www/certbot/
-  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email elwaeryousef@gmail.com -d sites.connectit.org --agree-tos
+  #   command: certonly --webroot -w /var/www/certbot --force-renewal --email elwaeryousef@gmail.com -d connect.read-it.live --agree-tos
   #   depends_on:
   #     - frontend
   #     - backend
@@ -33,8 +31,6 @@ services:
     command: mongod --auth
     restart: unless-stopped
     env_file: ./envfiles/DB.env
-    ports:
-    - 27017:27017
     networks:
       - private
     volumes:
@@ -79,3 +75,6 @@ networks:
   frontend_net:
   flutter_net:
   Connect:
+  global:
+    external: true
+    driver: bridge

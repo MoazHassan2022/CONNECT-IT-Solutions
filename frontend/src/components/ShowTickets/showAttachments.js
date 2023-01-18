@@ -53,7 +53,7 @@ function ShowAttachments(props) {
         <Box sx={{ maxHeight: 255, maxWidth: 700, p: 0 }}>
             {isImage(exten(attachments[activeStep])) ?  
         <Box sx={{ padding : 0}}>
-          <Link href={`/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}}>
+          <Link href={`/api/public/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}}>
               <Box
                 component="img"
                 sx={{
@@ -64,7 +64,7 @@ function ShowAttachments(props) {
                   width: '100%',
                   padding:"0 0 0 0",
                 }}
-                src={`/files/tickets/${attachments[activeStep]}`}
+                src={`/api/public/files/tickets/${attachments[activeStep]}`}
                 alt={attachments[activeStep]}
               />
           </Link>
@@ -83,7 +83,7 @@ function ShowAttachments(props) {
                 spacing={2}
                   sx={{ marginTop: 8}}
                  >
-                  <Link href={`/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}} >
+                  <Link href={`/api/public/files/tickets/${attachments[activeStep]}`} target="_blank" sx={{ color: theme.palette.secondary.main , fontSize: 18}} >
                     <Stack 
                     direction="column"
                     justifyContent="center"
