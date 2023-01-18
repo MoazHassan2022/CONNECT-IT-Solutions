@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Digitize",
+  "name": "website to reacond and retrive data enterd by supervisor",
   "icons": [
     {
-      "src": "/api/public/Assets/CONNECT.ico",
+      "src": "/api/public/Assets/logoicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/api/public/Assets/CONNECT.png",
+      "src": "/api/public/Assets/logoicon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/api/public/Assets/CONNECT.png",
+      "src": "/api/public/Assets/logoicon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
