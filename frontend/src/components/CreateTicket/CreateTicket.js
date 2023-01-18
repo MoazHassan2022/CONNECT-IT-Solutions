@@ -234,7 +234,7 @@ const CreateTicket = () => {
                 <TextField
                 id="outlined-textarea"
                 label="Description"
-                placeholder="Placeholder"
+                placeholder="please describe your problem in details..."
                 multiline
                 minRows={3}
                 maxRows={15}
