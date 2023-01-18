@@ -49,7 +49,6 @@ const CreateTicket = () => {
     const auth = "Bearer " + cookies.token;
     var pro = ProjectID;
     if(NewProject == 1){
-      console.log(project);
       await axios.post(baseurl + "/api/projects", {name:project},  {headers:{
         authorization: auth, 
       }}).then(res => {setProjectID(res.data.data.project._id); pro = res.data.data.project._id; 
@@ -73,12 +72,10 @@ const CreateTicket = () => {
     }
 
 
-    //console.log(Imgs , Imgs[0].target.files);
     await axios.post(baseurl + "/api/tickets", formData,  
     {headers:{
       authorization: auth, 
     }}).then(res => {
-      console.log(res);
       setSnakeData([true, "Ticket is successfully created" , "success"]);
       setTimeout(window.location.reload() , 5000 );
     }).catch(error => setSnakeData([true, error.response.data.message , "error"]) );
@@ -110,7 +107,6 @@ const CreateTicket = () => {
       disablePortal
       required
       onChange={(event, newValue) => {
-        console.log(newValue);
         setProjectID(newValue._id);
         setProject(newValue.name);
       }}
@@ -181,7 +177,7 @@ const CreateTicket = () => {
                     required
                     defaultValue={0}
                     row
-                    onChange={(e) =>{ setNewProject(e.target.value); console.log(e.target.value); } }
+                    onChange={(e) =>{ setNewProject(e.target.value);  } }
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"  
                     sx={{paddingLeft:1}}

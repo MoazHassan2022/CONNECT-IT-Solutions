@@ -77,8 +77,6 @@ import {baseurl} from "../../Utalites/utalities"
     const  handlesignup = (e) => {
         e.preventDefault();
 
-        console.log(baseurl);
-
         let formData = new FormData();
         formData.append('email', Email);
         formData.append('password', Password);

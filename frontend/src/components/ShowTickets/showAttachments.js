@@ -27,11 +27,11 @@ function ShowAttachments(props) {
   const maxSteps = attachments.length;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {console.log(prevActiveStep);  return prevActiveStep + 1;   });
+    setActiveStep((prevActiveStep) => {  return prevActiveStep + 1;   });
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => { console.log(prevActiveStep);    return prevActiveStep - 1;});
+    setActiveStep((prevActiveStep) => {     return prevActiveStep - 1;});
   };
 
  
