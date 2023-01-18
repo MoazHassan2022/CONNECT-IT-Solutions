@@ -153,12 +153,12 @@ import {baseurl} from "../../Utalites/utalities"
                     <div className="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us please login with your personal info</p>
-                        <button className="ghost" id="signIn" onClick={ () => setsignin(false) } >Sign In</button>
+                        <Button sx={{ borderRadius:4 , width: 150, borderColor:"#000", borderWidth:"5px" }} variant="contained"  id="signIn" onClick={ () => setsignin(false) } >Sign In</Button>
                     </div>
                     <div className="overlay-panel overlay-right">
                         <h1>Hello, Friend!</h1>
                         <p>Enter your personal details and let us solve your problems!</p>
-                        <button className="ghost" id="signUp" onClick={ () => setsignin(true) } >Sign Up</button>
+                        <Button sx={{ borderRadius:4 , width: 150, borderColor:"#000", borderWidth:"5px" }} variant="contained" className="ghost" id="signUp" onClick={ () => setsignin(true) } >Sign Up</Button>
                     </div>
                 </div>
             </div>

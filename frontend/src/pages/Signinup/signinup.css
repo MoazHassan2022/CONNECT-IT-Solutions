@@ -131,6 +131,7 @@ input:focus{
 button.ghost {
     background: transparent;
     border-color: #fff;
+    border-width: 2px;
 }
 
 .form-container {
