@@ -1,14 +1,13 @@
-import { Autocomplete, BottomNavigation, BottomNavigationAction,  Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Autocomplete, BottomNavigation, BottomNavigationAction,  Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useState } from "react";
 import Draggable from 'react-draggable';
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { RiArrowUpDownFill } from "react-icons/ri";
-import { IconButton, TableCell , useTheme } from "@mui/material";
+import { IconButton , useTheme } from "@mui/material";
 import {GrAddCircle, GrPowerReset} from "react-icons/gr"
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { IoPersonCircle } from "react-icons/io5";
 import { MdOutlineCancel, MdOutlineCheckCircle } from "react-icons/md";
 
 
@@ -87,7 +86,7 @@ export const Filter =({open , handleClose  , fetch , baseapi , tabnumber }) =>{
 
   const fetchProjects = async (text) => {
     const auth = "Bearer " + cookies.token;
-     const res = await axios.get(`http://127.0.0.1:3000/api/projects?name=${text}`, {headers:{
+     const res = await axios.get(`/api/projects?name=${text}`, {headers:{
       authorization: auth, 
     }});  
     return [res.data.results, res.data.data.projects];
@@ -261,7 +260,6 @@ const ResetAtt = () => {
       api += chose;
     }
 
-    console.log(api);
   
     fetch(api);
     handleClose();
@@ -327,7 +325,15 @@ const ResetAtt = () => {
                         {ChoseSelections.map(ky => <Typography sx={{display: 'block',}}> {handleresult(ky)} </Typography> )}
                       </Stack>
                       <Stack direction="column" spacing={2}>
-                        {sortSelections.map(ky => { if(sortselect[ky] != 0) return <Chip sx={{marginTop:1}} icon={ sortselect[ky] == 1 ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />} label={(sortselect[ky] == 1 ? "ascending " : "descending ") +  ky.toString()} />;})}
+                        {sortSelections.map(ky => 
+                          { 
+                            if(sortselect[ky] != 0) 
+                            {
+                              return (<Chip sx={{marginTop:1}} 
+                              icon={ sortselect[ky] == 1 ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />} 
+                              label={(sortselect[ky] == 1 ? "ascending " : "descending ") +  ky.toString()} 
+                              />)
+                              }; })}
                       </Stack>
                     </Stack>
                 </Stack>
