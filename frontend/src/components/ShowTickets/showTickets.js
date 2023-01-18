@@ -371,7 +371,7 @@ function Row({roww , snackbarShowMessage}) {
               </Box>
               {row.status !== 3 && <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar size="large" src={`/img/users/${cookies.photo}`} alt="Name" sx={{marginLeft:1.1, marginRight:1.2 , width:50 , height:50 }} />
+              <Avatar size="large" src={`/api/public/img/users/${cookies.photo}`} alt="Name" sx={{marginLeft:1.1, marginRight:1.2 , width:50 , height:50 }} />
             </ListItemAvatar>
             <ListItemText
               secondary={

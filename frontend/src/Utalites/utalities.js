@@ -1,1 +1,1 @@
-export const baseurl="https://connect.read-it.live";
+export const baseurl="";
