@@ -10,7 +10,7 @@ import theme from "../../Utalites/Theme";
 import {IoPersonCircle} from "react-icons/io5"
 import { BiLogIn  } from "react-icons/bi" 
 import { FaRegArrowAltCircleUp } from "react-icons/fa";
-
+import {baseurl} from "../../Utalites/utalities"
 
  export const Signinup = () => {
 
@@ -34,7 +34,7 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
     
 
     useEffect(() => {
-        if(cookies.token != undefined){
+        if(cookies.token !== undefined){
             history("/")
         }
 
@@ -50,11 +50,12 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
 
     const  handlesignin = (e) => {
         e.preventDefault();
+
         const user = {
             "email" : Email,
             "password" : Password,
         };
-        axios.post("/api/users/login", user)
+        axios.post(baseurl + "/api/users/login", user)
         .then(res => { 
             setCookie('token', res.data.token, { path: '/' });
             setCookie('email', res.data.data.user.email, { path: '/' });
@@ -70,10 +71,13 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
         .catch((err) =>
             setSnakeData([true, err.response.data.message , "error"])
         )
+
     }
 
     const  handlesignup = (e) => {
         e.preventDefault();
+
+        console.log(baseurl);
 
         let formData = new FormData();
         formData.append('email', Email);
@@ -81,9 +85,12 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
         formData.append('passwordConfirm', PasswordConfirmation);
         formData.append('name', Name);
         formData.append('companyName', CompanyName);
+        
+        if(Photo){
         formData.append('photo', Photo.target.files[0]);
+        }
 
-        axios.post("/api/users/signup", formData)
+        axios.post(baseurl + "/api/users/signup", formData)
         .then(res => { 
             setCookie('token', res.data.token, { path: '/' });
             setCookie('email', res.data.data.user.email, { path: '/' });

@@ -7,6 +7,7 @@ import { BsFillCloudUploadFill } from "react-icons/bs";
 import {MdSend} from "react-icons/md"
 import { useNavigate } from "react-router";
 import theme from "../../Utalites/Theme";
+import {baseurl} from "../../Utalites/utalities"
 
 const CreateTicket = () => {
 
@@ -49,7 +50,7 @@ const CreateTicket = () => {
     var pro = ProjectID;
     if(NewProject == 1){
       console.log(project);
-      await axios.post("/api/projects", {name:project},  {headers:{
+      await axios.post(baseurl + "/api/projects", {name:project},  {headers:{
         authorization: auth, 
       }}).then(res => {setProjectID(res.data.data.project._id); pro = res.data.data.project._id; 
         setSnakeData([true, "Project is successfully created" , "success"]);
@@ -73,7 +74,7 @@ const CreateTicket = () => {
 
 
     //console.log(Imgs , Imgs[0].target.files);
-    await axios.post("/api/tickets", formData,  
+    await axios.post(baseurl + "/api/tickets", formData,  
     {headers:{
       authorization: auth, 
     }}).then(res => {

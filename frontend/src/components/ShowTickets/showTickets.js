@@ -29,6 +29,7 @@ import { useCookies } from 'react-cookie';
 import ShowAttachments from './showAttachments';
 import {FaFilter} from "react-icons/fa"
 import Filter from './Filter';
+import { baseurl } from '../../Utalites/utalities';
 
 
 function TablePaginationActions(props) {
@@ -337,7 +338,7 @@ function Row({roww , snackbarShowMessage}) {
               <Box sx={{ margin: 1 }}>
               {row.Comments.map((comment, index) => { 
                 let name = comment.name;
-                let photo = `/public/img/users/${comment.photo}`;
+                let photo = baseurl+`/api/public/img/users/${comment.photo}`;
                 let Date = row.Date;
                 let content = comment.content;
                 return (

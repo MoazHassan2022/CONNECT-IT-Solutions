@@ -14,6 +14,7 @@ import { useCookies } from "react-cookie";
 import { Stack } from "@mui/material";
 import { Alert,  Snackbar } from "@mui/material";
 import {MdOutlineCancel , MdOutlineCheckCircle} from "react-icons/md"
+import {baseurl} from "../../Utalites/utalities"
 
 
 
@@ -68,7 +69,7 @@ function a11yProps(index) {
       history("/login");
     }
     const auth = "Bearer " + cookies.token;
-    setImg(`/public/img/users/${cookies.photo}`);
+    setImg(baseurl+`/api/public/img/users/${cookies.photo}`);
     },[])
 
     // 1 => customer , 2 => Admin
@@ -97,7 +98,7 @@ function a11yProps(index) {
     let formData = new FormData();
     formData.append("photo", imgnew.target.files[0]);
     const auth = "Bearer " + cookies.token;
-    await axios.patch("/api/users/updateMe",formData,{headers:{
+    await axios.patch(baseurl + "/api/users/updateMe",formData,{headers:{
       authorization: auth, 
     }}).then(res =>{
       setCookie("photo",res.data.data.user.photo);
@@ -115,7 +116,7 @@ function a11yProps(index) {
    const DeleteMe = async () => {
     const auth = "Bearer " + cookies.token;
 
-    await axios.delete("/api/users/deleteMe",{headers:{
+    await axios.delete(baseurl + "/api/users/deleteMe",{headers:{
       authorization: auth, 
     }}).then(res => {});
      
@@ -221,15 +222,15 @@ function a11yProps(index) {
 
           { usertype == 2 && <>
               <TabPanel value={value} index={0}>
-              <ShowTickets api={"/api/tickets?status=1"} tabNumber={0} />
+              <ShowTickets api={baseurl + "/api/tickets?status=1"} tabNumber={0} />
               </TabPanel>
 
               <TabPanel value={value} index={1} >
-              <ShowTickets api={"/api/users/myTickets?sort=createdAt"} tabNumber={1}  />
+              <ShowTickets api={baseurl + "/api/users/myTickets?sort=createdAt"} tabNumber={1}  />
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"/api/tickets?sort=createdAt"} tabNumber={2}  />      
+              <ShowTickets api={baseurl + "/api/tickets?sort=createdAt"} tabNumber={2}  />      
               </TabPanel>
 
                 </>
@@ -241,11 +242,11 @@ function a11yProps(index) {
               </TabPanel>
 
               <TabPanel value={value} index={1} >
-              <ShowTickets api={"/api/users/myTickets?sort=createdAt"} tabNumber={1}  />      
+              <ShowTickets api={baseurl + "/api/users/myTickets?sort=createdAt"} tabNumber={1}  />      
               </TabPanel>
 
               <TabPanel value={value} index={2} >
-              <ShowTickets api={"/api/tickets?sort=createdAt"} tabNumber={2}  />      
+              <ShowTickets api={baseurl + "/api/tickets?sort=createdAt"} tabNumber={2}  />      
               </TabPanel>
                   </>
           }
