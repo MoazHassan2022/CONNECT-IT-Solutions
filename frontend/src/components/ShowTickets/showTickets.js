@@ -286,7 +286,7 @@ function Row({roww , snackbarShowMessage}) {
                     {row.status === 3 && row.Answer != undefined &&
                         <ListItem alignItems="flex-start" sx={{marginRight:500}} >
                           <ListItemAvatar>
-                            <Avatar alt={row.adminName} src={`/img/users/${row.adminPhoto}`} />
+                            <Avatar alt={row.adminName} src={`/api/public/img/users/${row.adminPhoto}`} />
                           </ListItemAvatar>
                           <ListItemText
                             primary={
